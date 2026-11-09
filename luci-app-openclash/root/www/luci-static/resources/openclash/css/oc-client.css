@@ -73,7 +73,7 @@ html[data-darkmode="true"] .oc .config-select:focus {
     border: 1px solid var(--border-light);
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-sm);
-    background: var(--bg-white);
+    background: var(--oc-card-bg, var(--bg-white));
     display: flex;
     align-items: stretch;
     margin: 0;
@@ -81,7 +81,7 @@ html[data-darkmode="true"] .oc .config-select:focus {
 }
 
 .oc .main-card {
-    background: var(--bg-white);
+    background: var(--oc-card-bg, var(--bg-white));
     border: 1px solid var(--border-light);
     border-radius: var(--radius-lg);
     padding: var(--card-outer-padding);
@@ -1696,24 +1696,11 @@ html[data-darkmode="true"] .oc .config-select:focus {
     opacity: 1;
 }
 
-.oc .stats-view-toggle,
-.oc .myip-toolbar { gap: 0; }
-
 .oc .stats-view-toggle .icon-pill-opt + .icon-pill-opt::before,
-.oc .myip-toolbar .icon-pill-opt + .icon-pill-opt::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 50%;
-    width: 1px;
-    height: 10px;
-    margin-top: -5px;
-    background: var(--border-light);
-    pointer-events: none;
+.oc .myip-toolbar .icon-pill-opt + .icon-pill-opt::before,
+.oc .icon-pill .icon-pill-opt::after {
+    display: none !important;
 }
-
-.oc .stats-view-toggle .icon-pill-opt.active + .icon-pill-opt::before,
-.oc .myip-toolbar .icon-pill-opt.active + .icon-pill-opt::before { display: none; }
 
 .oc .stats-section .card-row.stats-grid {
     flex: 1 1 auto;
@@ -3750,27 +3737,33 @@ html[data-darkmode="true"] .oc .oix-announcement {
     border-radius: var(--radius-sm);
     box-shadow: var(--shadow-sm);
     display: flex; flex-direction: column;
-    padding: 4px 8px 0;
-    gap: 3px;
+    padding: 0 !important;
+    gap: 0 !important;
+    margin: 0 !important;
     flex: 1 1 auto; min-height: 0; min-width: 0;
     box-sizing: border-box; overflow: hidden;
-    margin-bottom: 5px;
     transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
 }
 .oc .ac-card:hover { border-color: var(--primary-color); box-shadow: var(--shadow-md); }
 
-.oc .ac-head { position: relative; display: flex; align-items: center; gap: 8px; flex: 0 0 auto; min-width: 0; padding: 0 2px 4px; }
-/* full-bleed header strip: it reaches the card edges and only the bottom border splits it from the list */
+.oc .ac-head {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 0 0 auto;
+    min-width: 0;
+    padding: 8px 14px !important;
+    background: transparent !important;
+    border-bottom: 1px solid var(--border-light) !important;
+}
 .oc .ac-head::before {
-    content: ''; position: absolute; left: -8px; right: -8px; top: -4px; bottom: 0;
-    background: var(--bg-light); border-bottom: 1px solid var(--border-light);
-    pointer-events: none;
+    display: none !important;
 }
 .oc .ac-head > * { position: relative; z-index: 1; }
 @media (max-width: 1024px) {
-    /* the stacked layout stretches the card, so it can afford roomier spacing */
-    .oc .ac-card { gap: 4px; }
-    .oc .ac-head { padding: 4px 2px 8px; }
+    .oc .ac-card { gap: 0 !important; padding: 0 !important; margin: 0 !important; }
+    .oc .ac-head { padding: 8px 14px !important; }
 }
 .oc .ac-sum { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text-secondary); white-space: nowrap; min-width: 0; }
 .oc .ac-sum > span:not(.ac-def-pill) { display: block; min-width: 0; overflow: hidden; text-overflow: ellipsis; }
@@ -3910,6 +3903,7 @@ html[data-darkmode="true"] .oc .ac-warn .ac-warn-btn { color: #fbbf24; }
     min-height: 32px !important;
     padding: 0 14px !important;
     background: var(--bg-light) !important;
+    border-top: none !important;
     border-bottom: 1px solid var(--border-light) !important;
     color: var(--text-secondary) !important;
     font-size: 11.5px !important;
@@ -4247,13 +4241,13 @@ html body .oc button.ac-th-cell:not(:disabled):hover {
 html:not([data-oc-theme]) .oc,
 html[data-oc-theme="classic"] .oc,
 .oc-ver-pills-top {
-    --primary-color: var(--oc-host-primary, var(--v-accent, var(--accent-text, var(--primary-color-high, var(--primary, var(--color-primary, var(--theme-primary, var(--main-color, var(--accent, #3b82f6)))))))));
-    --btn-primary-hover: var(--oc-host-primary-hover, color-mix(in srgb, var(--primary-color) 88%, #000000));
-    --text-on-primary: var(--oc-host-on-primary, var(--v-accent-ink, #ffffff));
-    --primary-text: var(--oc-host-primary-text, var(--accent-text, var(--primary-color)));
+    --primary-color: var(--oc-host-primary, var(--primary-color-high, #3b82f6));
+    --btn-primary-hover: var(--oc-host-primary-hover, var(--primary-color-medium, color-mix(in srgb, var(--primary-color) 88%, #000000)));
+    --text-on-primary: var(--oc-host-on-primary, var(--on-primary-color, #ffffff));
+    --primary-text: var(--oc-host-primary-text, var(--primary-color));
     --primary-a5: color-mix(in srgb, var(--primary-color) 5%, transparent);
     --primary-a8: color-mix(in srgb, var(--primary-color) 8%, transparent);
-    --primary-a10: var(--accent-soft, color-mix(in srgb, var(--primary-color) 10%, transparent));
+    --primary-a10: color-mix(in srgb, var(--primary-color) 10%, transparent);
     --primary-a12: color-mix(in srgb, var(--primary-color) 12%, transparent);
     --primary-a15: color-mix(in srgb, var(--primary-color) 15%, transparent);
     --primary-a20: color-mix(in srgb, var(--primary-color) 20%, transparent);
@@ -4261,27 +4255,35 @@ html[data-oc-theme="classic"] .oc,
     --primary-a40: color-mix(in srgb, var(--primary-color) 40%, transparent);
     --primary-a50: color-mix(in srgb, var(--primary-color) 50%, transparent);
     --primary-a60: color-mix(in srgb, var(--primary-color) 60%, transparent);
-    --bg-white: var(--s1, #ffffff);
-    --bg-light: var(--s3, #f8fafc);
-    --bg-gray: var(--s2, #f1f5f9);
-    --border-light: var(--line, #e2e8f0);
-    --border-color: var(--line-2, #cbd5e1);
-    --text-primary: var(--text, #1e293b);
-    --text-secondary: var(--text-2, #64748b);
-    --hover-bg: var(--s3, #f3f4f6);
-    --switch-off-bg: var(--s4, #cbd5e1);
+
+    /* Surfaces & Backgrounds */
+    --oc-card-bg: var(--oc-host-card-bg, var(--bg-white));
+    --bg-white: var(--oc-host-bg-white, var(--background-color-high, #ffffff));
+    --bg-light: var(--oc-host-bg-light, var(--background-color-medium, color-mix(in srgb, var(--bg-white) 95%, var(--text-primary))));
+    --bg-gray: var(--oc-host-bg-gray, var(--background-color-low, color-mix(in srgb, var(--bg-white) 90%, var(--text-primary))));
+    --hover-bg: var(--background-color-low, color-mix(in srgb, var(--bg-white) 92%, var(--text-primary)));
+    --switch-off-bg: var(--border-color-high, color-mix(in srgb, var(--bg-white) 75%, var(--text-primary)));
+
+    /* Borders & Lines */
+    --border-light: var(--oc-host-border-light, var(--border-color-low, #e2e8f0));
+    --border-color: var(--oc-host-border-color, var(--border-color-medium, #cbd5e1));
+
+    /* Text Colors */
+    --text-primary: var(--oc-host-text-primary, var(--text-color-high, #1e293b));
+    --text-secondary: var(--oc-host-text-secondary, var(--text-color-medium, #64748b));
+    --text-title: var(--oc-host-text-primary, var(--text-color-highest, #0f172a));
 }
 
 html[data-darkmode="true"]:not([data-oc-theme]) .oc,
 html[data-darkmode="true"][data-oc-theme="classic"] .oc,
 html[data-darkmode="true"] .oc-ver-pills-top {
-    --primary-color: var(--oc-host-primary, var(--v-accent, var(--accent, var(--primary-color-high, var(--dark-primary, var(--primary, var(--color-primary, var(--theme-primary, var(--main-color, #3b82f6)))))))));
-    --btn-primary-hover: var(--oc-host-primary-hover, var(--accent-hover, var(--primary-color-medium, var(--primary-hover, color-mix(in srgb, var(--primary-color) 88%, #ffffff)))));
-    --text-on-primary: var(--oc-host-on-primary, var(--v-accent-ink, var(--accent-ink, #ffffff)));
-    --primary-text: var(--oc-host-primary-text, var(--accent-text, var(--primary-color)));
+    --primary-color: var(--oc-host-primary, var(--primary-color-high, #3b82f6));
+    --btn-primary-hover: var(--oc-host-primary-hover, var(--primary-color-medium, color-mix(in srgb, var(--primary-color) 88%, #ffffff)));
+    --text-on-primary: var(--oc-host-on-primary, var(--on-primary-color, #ffffff));
+    --primary-text: var(--oc-host-primary-text, var(--primary-color));
     --primary-a5: color-mix(in srgb, var(--primary-color) 5%, transparent);
     --primary-a8: color-mix(in srgb, var(--primary-color) 8%, transparent);
-    --primary-a10: var(--accent-soft, color-mix(in srgb, var(--primary-color) 10%, transparent));
+    --primary-a10: color-mix(in srgb, var(--primary-color) 10%, transparent);
     --primary-a12: color-mix(in srgb, var(--primary-color) 12%, transparent);
     --primary-a15: color-mix(in srgb, var(--primary-color) 15%, transparent);
     --primary-a20: color-mix(in srgb, var(--primary-color) 20%, transparent);
@@ -4289,15 +4291,23 @@ html[data-darkmode="true"] .oc-ver-pills-top {
     --primary-a40: color-mix(in srgb, var(--primary-color) 40%, transparent);
     --primary-a50: color-mix(in srgb, var(--primary-color) 50%, transparent);
     --primary-a60: color-mix(in srgb, var(--primary-color) 60%, transparent);
-    --bg-white: var(--s1, #18181b);
-    --bg-light: var(--s2, #22252a);
-    --bg-gray: var(--s3, #27272a);
-    --border-light: var(--line, #262a2f);
-    --border-color: var(--line-2, #353a41);
-    --text-primary: var(--text, #e8eaed);
-    --text-secondary: var(--text-2, #a9afb7);
-    --hover-bg: var(--s3, #22252a);
-    --switch-off-bg: var(--s4, #353a41);
+
+    /* Surfaces & Backgrounds */
+    --oc-card-bg: var(--oc-host-card-bg, var(--bg-white));
+    --bg-white: var(--oc-host-bg-white, var(--background-color-high, #18181b));
+    --bg-light: var(--oc-host-bg-light, var(--background-color-medium, color-mix(in srgb, var(--bg-white) 93%, var(--text-primary))));
+    --bg-gray: var(--oc-host-bg-gray, var(--background-color-low, color-mix(in srgb, var(--bg-white) 88%, var(--text-primary))));
+    --hover-bg: var(--background-color-low, color-mix(in srgb, var(--bg-white) 90%, var(--text-primary)));
+    --switch-off-bg: var(--border-color-high, color-mix(in srgb, var(--bg-white) 78%, var(--text-primary)));
+
+    /* Borders & Lines */
+    --border-light: var(--oc-host-border-light, var(--border-color-medium, #262a2f));
+    --border-color: var(--oc-host-border-color, var(--border-color-high, #353a41));
+
+    /* Text Colors */
+    --text-primary: var(--oc-host-text-primary, var(--text-color-high, #e8eaed));
+    --text-secondary: var(--oc-host-text-secondary, var(--text-color-medium, #a9afb7));
+    --text-title: var(--oc-host-text-primary, var(--text-color-highest, #f8fafc));
 }
 
 /* 1. Global Dashboard Container & LuCI Fieldset Reset */
@@ -4325,7 +4335,7 @@ fieldset.cbi-section:has(.oc) > table > tbody > tr > td {
     justify-content: space-between;
     gap: 12px;
     width: 100%;
-    background: var(--bg-white, #ffffff);
+    background: var(--oc-card-bg, var(--bg-white, #ffffff));
     border: 1px solid var(--border-light, #e2e8f0);
     border-radius: var(--radius-lg, 8px);
     padding: 6px 10px;
@@ -4434,7 +4444,7 @@ html[data-darkmode="true"] .oc .oc-notice #megaphone {
 
 /* 3. Hero Card (Unified Status & Config) */
 .oc .oc-hero-card {
-    background: var(--bg-white, #ffffff);
+    background: var(--oc-card-bg, var(--bg-white, #ffffff));
     border: 1px solid var(--border-light, #e2e8f0);
     border-radius: var(--radius-lg, 8px);
     box-shadow: var(--shadow-sm, 0 1px 2px rgba(0, 0, 0, 0.04));
@@ -4465,7 +4475,7 @@ html[data-darkmode="true"] .oc .oc-notice #megaphone {
 .oc .hero-row-status {
     position: relative;
     z-index: 30;
-    background: var(--bg-gray, #f8fafc);
+    background: transparent !important;
     border-radius: var(--radius-lg, 8px) var(--radius-lg, 8px) 0 0;
 }
 
@@ -4836,7 +4846,7 @@ html[data-darkmode="true"] .oc .oc-notice #megaphone {
 
 /* 4. Dual-layer Flat Control Tray */
 .oc .oc-control-tray {
-    background: var(--bg-white, #ffffff);
+    background: var(--oc-card-bg, var(--bg-white, #ffffff));
     border: 1px solid var(--border-light, #e2e8f0);
     border-radius: var(--radius-lg, 8px);
     box-shadow: var(--shadow-sm, 0 1px 2px rgba(0, 0, 0, 0.04));
@@ -5038,7 +5048,7 @@ html[data-darkmode="true"] .oc .oc-notice #megaphone {
 
 /* 5. Telemetry & Access Control */
 .oc .oc-telemetry-card {
-    background: var(--bg-white, #ffffff);
+    background: var(--oc-card-bg, var(--bg-white, #ffffff));
     border: 1px solid var(--border-light, #e2e8f0);
     border-radius: var(--radius-lg, 8px);
     box-shadow: var(--shadow-sm, 0 1px 2px rgba(0, 0, 0, 0.04));
@@ -5053,7 +5063,7 @@ html[data-darkmode="true"] .oc .oc-notice #megaphone {
     justify-content: space-between;
     gap: 12px;
     padding: 8px 14px;
-    background: var(--bg-gray, #f8fafc);
+    background: transparent !important;
     border-bottom: 1px solid var(--border-light, #e2e8f0);
     flex-wrap: wrap;
 }
@@ -5114,7 +5124,7 @@ html[data-darkmode="true"] .oc .oc-notice #megaphone {
     height: 215px;
     display: flex;
     flex-direction: column;
-    background: var(--bg-white, #ffffff);
+    background: transparent;
     box-sizing: border-box;
 }
 
@@ -5164,14 +5174,15 @@ html[data-darkmode="true"] .oc .oc-notice #megaphone {
     border: none;
     border-radius: 0;
     box-shadow: none;
-    margin: 0;
-    padding: 0;
+    margin: 0 !important;
+    padding: 0 !important;
+    gap: 0 !important;
     background: transparent;
 }
 
 .oc .oc-ac-card-section .ac-head {
     padding: 8px 14px;
-    background: var(--bg-gray, #f8fafc);
+    background: transparent !important;
     border-bottom: 1px solid var(--border-light, #e2e8f0);
 }
 
@@ -5183,6 +5194,9 @@ html[data-darkmode="true"] .oc .oc-notice #megaphone {
     padding: 0 14px !important;
     height: 32px !important;
     min-height: 32px !important;
+    background: var(--bg-light) !important;
+    border-top: none !important;
+    border-bottom: 1px solid var(--border-light) !important;
 }
 
 .oc .oc-ac-card-section .ac-list {
@@ -5294,7 +5308,7 @@ html[data-darkmode="true"] .oc .oc-notice #megaphone {
 
 .oc .myip-ip-section,
 .oc .myip-check-section {
-    background: var(--bg-white, #ffffff);
+    background: var(--oc-card-bg, var(--bg-white, #ffffff));
     border: 1px solid var(--border-light, #e2e8f0);
     border-radius: var(--radius-lg, 8px);
     padding: 0;
@@ -5314,7 +5328,7 @@ html[data-darkmode="true"] .oc .oc-notice #megaphone {
     min-height: 40px !important;
     margin: 0 !important;
     padding: 0 14px !important;
-    background: var(--bg-gray, #f8fafc) !important;
+    background: transparent !important;
     border-bottom: 1px solid var(--border-light, #e2e8f0) !important;
     font-size: 13px !important;
     font-weight: 600 !important;
@@ -5329,7 +5343,7 @@ html[data-darkmode="true"] .oc .oc-notice #megaphone {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 0;
-    background: var(--bg-white, #ffffff);
+    background: transparent;
     margin: 0;
     padding: 0;
 }
@@ -5345,7 +5359,7 @@ html[data-darkmode="true"] .oc .oc-notice #megaphone {
     gap: 4px;
     box-shadow: none;
     margin: 0;
-    background: var(--bg-white, #ffffff);
+    background: transparent;
     box-sizing: border-box;
 }
 
@@ -5434,9 +5448,20 @@ html[data-darkmode="true"] .oc .oc-notice,
 html[data-darkmode="true"] .oc .oc-hero-card,
 html[data-darkmode="true"] .oc .oc-control-tray,
 html[data-darkmode="true"] .oc .oc-telemetry-card,
+html[data-darkmode="true"] .oc .main-card,
+html[data-darkmode="true"] .oc .announcement-card,
+html[data-darkmode="true"] .oc .sub-tab-card,
+html[data-darkmode="true"] .oc .developer-container {
+    background: var(--oc-card-bg, var(--bg-white));
+    border-color: var(--border-light);
+}
+
 html[data-darkmode="true"] .oc .myip-ip-section,
-html[data-darkmode="true"] .oc .myip-check-section,
-html[data-darkmode="true"] .oc .developer-container,
+html[data-darkmode="true"] .oc .myip-check-section {
+    background: var(--oc-card-bg, var(--bg-white));
+    border-color: var(--border-light);
+}
+
 html[data-darkmode="true"] .oc .quick-dropdown-layer {
     background: var(--bg-white);
     border-color: var(--border-light);
@@ -5445,13 +5470,19 @@ html[data-darkmode="true"] .oc .quick-dropdown-layer {
 .oc .hero-row-status,
 .oc .telemetry-head,
 .oc .myip-section-title,
-.oc .dropdown-header-info,
 .oc .oc-ac-card-section .ac-head,
+.oc .ac-head,
 html[data-darkmode="true"] .oc .hero-row-status,
 html[data-darkmode="true"] .oc .telemetry-head,
 html[data-darkmode="true"] .oc .myip-section-title,
-html[data-darkmode="true"] .oc .dropdown-header-info,
-html[data-darkmode="true"] .oc .oc-ac-card-section .ac-head {
+html[data-darkmode="true"] .oc .oc-ac-card-section .ac-head,
+html[data-darkmode="true"] .oc .ac-head {
+    background: transparent !important;
+    border-color: var(--border-light) !important;
+}
+
+.oc .dropdown-header-info,
+html[data-darkmode="true"] .oc .dropdown-header-info {
     background: var(--bg-light) !important;
     border-color: var(--border-light) !important;
 }
@@ -5465,9 +5496,14 @@ html[data-darkmode="true"] .oc .oc-native-select,
 html[data-darkmode="true"] .oc .quick-dropdown-layer .dashboard-btn,
 html[data-darkmode="true"] .oc .quick-dropdown-layer input.dashboard-btn,
 html[data-darkmode="true"] .oc .quick-dropdown-layer .dropdown-item-btn,
-html[data-darkmode="true"] .oc .telemetry-kpi-strip,
-html[data-darkmode="true"] .oc .myip-card-item {
+html[data-darkmode="true"] .oc .telemetry-kpi-strip {
     background-color: var(--bg-light) !important;
+    border-color: var(--border-light) !important;
+    color: var(--text-primary) !important;
+}
+
+html[data-darkmode="true"] .oc .myip-card-item {
+    background-color: transparent !important;
     border-color: var(--border-light) !important;
     color: var(--text-primary) !important;
 }
@@ -5996,27 +6032,59 @@ html[data-darkmode="true"] .oc .oc-status-pill:hover {
     filter: brightness(1.1) !important;
 }
 
-/* 3. Segmented Controls: ZERO Box-Shadow & Strictly Follow Upstream Theme Color var(--primary-color) */
-
-/* 3.1 DNS Enhanced Mode Pill (.mode-pill) */
-.oc .mode-pill {
+/* 3. Segmented Controls: Unified "Background in Border" Style */
+.oc .mode-pill:not(.oc-hidden),
+.oc #stats-tabs:not(.oc-hidden),
+.oc .stats-tabs:not(.oc-hidden),
+.oc .ac-dir-pill:not(.oc-hidden),
+.oc .ac-switch:not(.oc-hidden),
+.oc .stats-view-toggle:not(.oc-hidden),
+.oc .myip-toolbar:not(.oc-hidden),
+.oc .icon-pill:not(.oc-hidden) {
     display: inline-flex !important;
     align-items: center !important;
-    background: var(--seg-bg, var(--bg-light)) !important;
-    border: 1px solid var(--border-light) !important;
+    background: var(--bg-light) !important;
+    border: 1px solid var(--border-color) !important;
     border-radius: 6px !important;
     padding: 2px !important;
     gap: 2px !important;
+    height: auto !important;
+    box-sizing: border-box !important;
     box-shadow: none !important;
 }
 
-.oc .mode-pill .mode-pill-opt {
+.oc .oc-hidden,
+.oc-hidden {
+    display: none !important;
+}
+
+/* Clear old pseudo-elements & dividers */
+.oc .mode-pill .mode-pill-opt::after,
+.oc .icon-pill .icon-pill-opt::after,
+.oc .stats-view-toggle .icon-pill-opt + .icon-pill-opt::before,
+.oc .myip-toolbar .icon-pill-opt + .icon-pill-opt::before,
+.oc .ac-switch button::before,
+.oc .ac-switch button::after,
+.oc #stats-tabs .cbi-button-option::before,
+.oc #stats-tabs .cbi-button-option::after,
+.oc .stats-tabs .cbi-button-option::before,
+.oc .stats-tabs .cbi-button-option::after {
+    display: none !important;
+}
+
+/* 3.1 Icon-only Options (.mode-pill-opt, .icon-pill-opt) */
+.oc .mode-pill .mode-pill-opt,
+.oc .icon-pill .icon-pill-opt,
+.oc .stats-view-toggle .icon-pill-opt,
+.oc .myip-toolbar .icon-pill-opt {
     position: relative !important;
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
     width: 28px !important;
-    height: 20px !important;
+    height: 22px !important;
+    min-height: 22px !important;
+    line-height: 1 !important;
     padding: 0 !important;
     border-radius: 4px !important;
     background: transparent !important;
@@ -6024,67 +6092,44 @@ html[data-darkmode="true"] .oc .oc-status-pill:hover {
     cursor: pointer !important;
     border: none !important;
     box-shadow: none !important;
+    user-select: none !important;
     transition: all var(--transition-fast, 0.15s ease) !important;
 }
 
-.oc .mode-pill .mode-pill-opt svg {
+.oc .mode-pill .mode-pill-opt svg,
+.oc .icon-pill .icon-pill-opt svg,
+.oc .stats-view-toggle .icon-pill-opt svg,
+.oc .myip-toolbar .icon-pill-opt svg {
     width: 13px !important;
     height: 13px !important;
     display: block !important;
     stroke: currentColor !important;
 }
 
-.oc .mode-pill .mode-pill-opt::after {
-    display: none !important;
-}
-
-.oc .mode-pill .mode-pill-opt:hover {
-    color: var(--primary-color) !important;
-    background: var(--primary-a10) !important;
-}
-
-/* Active: Upstream Primary Color */
-.oc .mode-pill input:checked + .mode-pill-opt,
-.oc .mode-pill .mode-pill-opt.active {
-    background: var(--primary-color) !important;
-    color: var(--text-on-primary, #ffffff) !important;
-    box-shadow: none !important;
-}
-
-.oc .mode-pill input:checked + .mode-pill-opt svg,
-.oc .mode-pill .mode-pill-opt.active svg {
-    stroke: var(--text-on-primary, #ffffff) !important;
-    color: var(--text-on-primary, #ffffff) !important;
-}
-
-/* 3.2 Access Control Header Batch Toggle (.ac-dir-pill) */
-.oc .ac-dir-pill {
-    display: inline-flex !important;
-    align-items: center !important;
-    background: var(--bg-light) !important;
-    border: 1px solid var(--border-light) !important;
-    border-radius: 6px !important;
-    padding: 2px !important;
-    gap: 2px !important;
-    box-shadow: none !important;
-}
-
+/* 3.2 Text Options (#stats-tabs, .ac-dir-opt, .ac-switch button) */
+.oc #stats-tabs .cbi-button-option,
+.oc .stats-tabs .cbi-button-option,
 .oc .ac-dir-opt {
+    position: relative !important;
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
     gap: 4px !important;
-    height: 20px !important;
-    padding: 0 8px !important;
-    font-size: 11px !important;
-    font-weight: 600 !important;
+    height: 22px !important;
+    min-height: 22px !important;
     line-height: 1 !important;
+    padding: 0 9px !important;
     border-radius: 4px !important;
     border: none !important;
     background: transparent !important;
     color: var(--text-secondary) !important;
-    cursor: pointer !important;
+    font-size: 11.5px !important;
+    font-weight: 600 !important;
     box-shadow: none !important;
+    cursor: pointer !important;
+    user-select: none !important;
+    margin: 0 !important;
+    white-space: nowrap !important;
     transition: all var(--transition-fast, 0.15s ease) !important;
 }
 
@@ -6094,121 +6139,72 @@ html[data-darkmode="true"] .oc .oc-status-pill:hover {
     stroke: currentColor !important;
 }
 
-.oc .ac-dir-opt:hover:not(:disabled):not(.active) {
-    color: var(--primary-color) !important;
-    background: var(--primary-a10) !important;
-}
-
-/* Active: Upstream Primary Color */
-.oc .ac-dir-opt.active,
-.oc .ac-dir-opt[aria-pressed="true"] {
-    background: var(--primary-color) !important;
-    color: var(--text-on-primary, #ffffff) !important;
-    box-shadow: none !important;
-}
-
-.oc .ac-dir-opt.active svg,
-.oc .ac-dir-opt[aria-pressed="true"] svg {
-    stroke: var(--text-on-primary, #ffffff) !important;
-    color: var(--text-on-primary, #ffffff) !important;
-}
-
-/* 3.3 Access Control Row Inline Toggle (.ac-ctrl .ac-switch) */
-.oc .ac-switch {
-    display: inline-flex !important;
-    align-items: center !important;
-    background: var(--bg-light) !important;
-    border: 1px solid var(--border-light) !important;
-    border-radius: 6px !important;
-    padding: 2px !important;
-    gap: 2px !important;
-    box-shadow: none !important;
-}
-
 .oc .ac-switch button {
+    position: relative !important;
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
+    gap: 4px !important;
     min-width: 40px !important;
-    height: 20px !important;
-    padding: 0 6px !important;
-    border: none !important;
-    border-radius: 4px !important;
-    background: transparent !important;
-    font-size: 11px !important;
-    font-weight: 600 !important;
+    height: 22px !important;
+    min-height: 22px !important;
     line-height: 1 !important;
+    padding: 0 7px !important;
+    border-radius: 4px !important;
+    border: none !important;
+    background: transparent !important;
     color: var(--text-secondary) !important;
-    cursor: pointer !important;
+    font-size: 11.5px !important;
+    font-weight: 600 !important;
     box-shadow: none !important;
+    cursor: pointer !important;
+    user-select: none !important;
+    margin: 0 !important;
+    white-space: nowrap !important;
     transition: all var(--transition-fast, 0.15s ease) !important;
 }
 
-.oc .ac-switch button::before {
-    display: none !important;
-}
-
+/* Hover States */
+.oc .mode-pill .mode-pill-opt:hover,
+.oc .icon-pill .icon-pill-opt:hover,
+.oc .stats-view-toggle .icon-pill-opt:hover,
+.oc .myip-toolbar .icon-pill-opt:hover,
+.oc #stats-tabs .cbi-button-option:hover,
+.oc .stats-tabs .cbi-button-option:hover,
+.oc .ac-dir-opt:hover:not(:disabled):not(.active),
 .oc .ac-switch:not(.ac-disabled) button:hover:not(.on):not([aria-pressed="true"]) {
-    color: var(--primary-color) !important;
+    color: var(--primary-text, var(--primary-color)) !important;
     background: var(--primary-a10) !important;
 }
 
-/* Active: Upstream Primary Color */
+/* Active / Checked States */
+.oc .mode-pill input:checked + .mode-pill-opt,
+.oc .mode-pill .mode-pill-opt.active,
+.oc .icon-pill .icon-pill-opt.active,
+.oc .stats-view-toggle .icon-pill-opt.active,
+.oc .myip-toolbar .icon-pill-opt.active,
+.oc #stats-tabs input:checked + .cbi-button-option,
+.oc .stats-tabs input:checked + .cbi-button-option,
+.oc .stats-tab.active,
+.oc .ac-dir-opt.active,
+.oc .ac-dir-opt[aria-pressed="true"],
 .oc .ac-switch button.on,
 .oc .ac-switch button[aria-pressed="true"] {
     background: var(--primary-color) !important;
     color: var(--text-on-primary, #ffffff) !important;
+    border: none !important;
     box-shadow: none !important;
 }
 
-/* 3.4 Telemetry Chart Tabs & Other Segmented Controls */
-.oc #stats-tabs,
-.oc .stats-tabs {
-    display: inline-flex !important;
-    align-items: center !important;
-    width: auto !important;
-    height: auto !important;
-    background: var(--bg-light) !important;
-    border: 1px solid var(--border-light) !important;
-    border-radius: 6px !important;
-    padding: 2px !important;
-    gap: 2px !important;
-    box-shadow: none !important;
-}
-.oc #stats-tabs .cbi-button-option::before,
-.oc #stats-tabs .cbi-button-option::after,
-.oc .stats-tabs .cbi-button-option::before,
-.oc .stats-tabs .cbi-button-option::after {
-    display: none !important;
-}
-.oc #stats-tabs .cbi-button-option,
-.oc .stats-tabs .cbi-button-option {
-    flex: 0 0 auto !important;
-    margin: 0 !important;
-    min-height: 24px !important;
-    height: 24px !important;
-    padding: 0 10px !important;
-    display: inline-flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    border-radius: 4px !important;
-    font-size: 11.5px !important;
-    font-weight: 600 !important;
-    color: var(--text-secondary) !important;
-    background: transparent !important;
-    box-shadow: none !important;
-}
-.oc #stats-tabs .cbi-button-option:hover,
-.oc .stats-tabs .cbi-button-option:hover {
-    color: var(--primary-color) !important;
-    background: var(--primary-a10) !important;
-}
-.oc #stats-tabs input:checked + .cbi-button-option,
-.oc .stats-tabs input:checked + .cbi-button-option,
-.oc .stats-tab.active {
-    background: var(--primary-color) !important;
+.oc .mode-pill input:checked + .mode-pill-opt svg,
+.oc .mode-pill .mode-pill-opt.active svg,
+.oc .icon-pill .icon-pill-opt.active svg,
+.oc .stats-view-toggle .icon-pill-opt.active svg,
+.oc .myip-toolbar .icon-pill-opt.active svg,
+.oc .ac-dir-opt.active svg,
+.oc .ac-dir-opt[aria-pressed="true"] svg {
+    stroke: var(--text-on-primary, #ffffff) !important;
     color: var(--text-on-primary, #ffffff) !important;
-    box-shadow: none !important;
 }
 
 /* 4. Client Sorting Dropdown Left-Aligned (#ac-sort-menu) */
@@ -6648,13 +6644,13 @@ html[data-darkmode="true"] .oc .oc-native-select {
 [data-page^="admin-services-openclash"] .oc,
 .oc,
 .oc-ver-pills-top {
-    --primary-color: var(--oc-host-primary, var(--v-accent, var(--accent-text, var(--primary-color-high, var(--proton-accent, var(--primary, var(--color-primary, var(--theme-primary, var(--main-color, var(--accent, #3b82f6))))))))));
-    --btn-primary-hover: var(--oc-host-primary-hover, color-mix(in srgb, var(--primary-color) 88%, #000000));
-    --text-on-primary: var(--oc-host-on-primary, var(--v-accent-ink, #ffffff));
-    --primary-text: var(--oc-host-primary-text, var(--accent-text, var(--primary-color)));
+    --primary-color: var(--oc-host-primary, var(--primary-color-high, #3b82f6));
+    --btn-primary-hover: var(--oc-host-primary-hover, var(--primary-color-medium, color-mix(in srgb, var(--primary-color) 88%, #000000)));
+    --text-on-primary: var(--oc-host-on-primary, var(--on-primary-color, #ffffff));
+    --primary-text: var(--oc-host-primary-text, var(--primary-color));
     --primary-a5: color-mix(in srgb, var(--primary-color) 5%, transparent);
     --primary-a8: color-mix(in srgb, var(--primary-color) 8%, transparent);
-    --primary-a10: var(--accent-soft, color-mix(in srgb, var(--primary-color) 10%, transparent));
+    --primary-a10: color-mix(in srgb, var(--primary-color) 10%, transparent);
     --primary-a12: color-mix(in srgb, var(--primary-color) 12%, transparent);
     --primary-a15: color-mix(in srgb, var(--primary-color) 15%, transparent);
     --primary-a20: color-mix(in srgb, var(--primary-color) 20%, transparent);
@@ -6662,18 +6658,35 @@ html[data-darkmode="true"] .oc .oc-native-select {
     --primary-a40: color-mix(in srgb, var(--primary-color) 40%, transparent);
     --primary-a50: color-mix(in srgb, var(--primary-color) 50%, transparent);
     --primary-a60: color-mix(in srgb, var(--primary-color) 60%, transparent);
+
+    /* Surfaces & Backgrounds */
+    --oc-card-bg: var(--oc-host-card-bg, var(--bg-white));
+    --bg-white: var(--oc-host-bg-white, var(--background-color-high, #ffffff));
+    --bg-light: var(--oc-host-bg-light, var(--background-color-medium, color-mix(in srgb, var(--bg-white) 95%, var(--text-primary))));
+    --bg-gray: var(--oc-host-bg-gray, var(--background-color-low, color-mix(in srgb, var(--bg-white) 90%, var(--text-primary))));
+    --hover-bg: var(--background-color-low, color-mix(in srgb, var(--bg-white) 92%, var(--text-primary)));
+    --switch-off-bg: var(--border-color-high, color-mix(in srgb, var(--bg-white) 75%, var(--text-primary)));
+
+    /* Borders & Lines */
+    --border-light: var(--oc-host-border-light, var(--border-color-low, #e2e8f0));
+    --border-color: var(--oc-host-border-color, var(--border-color-medium, #cbd5e1));
+
+    /* Text Colors */
+    --text-primary: var(--oc-host-text-primary, var(--text-color-high, #1e293b));
+    --text-secondary: var(--oc-host-text-secondary, var(--text-color-medium, #64748b));
+    --text-title: var(--oc-host-text-primary, var(--text-color-highest, #0f172a));
 }
 
 html[data-darkmode="true"][data-page^="admin-services-openclash"] .oc,
 html[data-darkmode="true"] .oc,
 html[data-darkmode="true"] .oc-ver-pills-top {
-    --primary-color: var(--oc-host-primary, var(--v-accent, var(--accent, var(--primary-color-high, var(--proton-accent, var(--dark-primary, var(--primary, var(--color-primary, var(--theme-primary, var(--main-color, #3b82f6))))))))));
-    --btn-primary-hover: var(--oc-host-primary-hover, var(--accent-hover, var(--primary-color-medium, var(--primary-hover, color-mix(in srgb, var(--primary-color) 88%, #ffffff)))));
-    --text-on-primary: var(--oc-host-on-primary, var(--v-accent-ink, var(--accent-ink, #ffffff)));
-    --primary-text: var(--oc-host-primary-text, var(--accent-text, var(--primary-color)));
+    --primary-color: var(--oc-host-primary, var(--primary-color-high, #3b82f6));
+    --btn-primary-hover: var(--oc-host-primary-hover, var(--primary-color-medium, color-mix(in srgb, var(--primary-color) 88%, #ffffff)));
+    --text-on-primary: var(--oc-host-on-primary, var(--on-primary-color, #ffffff));
+    --primary-text: var(--oc-host-primary-text, var(--primary-color));
     --primary-a5: color-mix(in srgb, var(--primary-color) 5%, transparent);
     --primary-a8: color-mix(in srgb, var(--primary-color) 8%, transparent);
-    --primary-a10: var(--accent-soft, color-mix(in srgb, var(--primary-color) 10%, transparent));
+    --primary-a10: color-mix(in srgb, var(--primary-color) 10%, transparent);
     --primary-a12: color-mix(in srgb, var(--primary-color) 12%, transparent);
     --primary-a15: color-mix(in srgb, var(--primary-color) 15%, transparent);
     --primary-a20: color-mix(in srgb, var(--primary-color) 20%, transparent);
@@ -6681,6 +6694,23 @@ html[data-darkmode="true"] .oc-ver-pills-top {
     --primary-a40: color-mix(in srgb, var(--primary-color) 40%, transparent);
     --primary-a50: color-mix(in srgb, var(--primary-color) 50%, transparent);
     --primary-a60: color-mix(in srgb, var(--primary-color) 60%, transparent);
+
+    /* Surfaces & Backgrounds */
+    --oc-card-bg: var(--oc-host-card-bg, var(--bg-white));
+    --bg-white: var(--oc-host-bg-white, var(--background-color-high, #18181b));
+    --bg-light: var(--oc-host-bg-light, var(--background-color-medium, color-mix(in srgb, var(--bg-white) 93%, var(--text-primary))));
+    --bg-gray: var(--oc-host-bg-gray, var(--background-color-low, color-mix(in srgb, var(--bg-white) 88%, var(--text-primary))));
+    --hover-bg: var(--background-color-low, color-mix(in srgb, var(--bg-white) 90%, var(--text-primary)));
+    --switch-off-bg: var(--border-color-high, color-mix(in srgb, var(--bg-white) 78%, var(--text-primary)));
+
+    /* Borders & Lines */
+    --border-light: var(--oc-host-border-light, var(--border-color-medium, #262a2f));
+    --border-color: var(--oc-host-border-color, var(--border-color-high, #353a41));
+
+    /* Text Colors */
+    --text-primary: var(--oc-host-text-primary, var(--text-color-high, #e8eaed));
+    --text-secondary: var(--oc-host-text-secondary, var(--text-color-medium, #a9afb7));
+    --text-title: var(--oc-host-text-primary, var(--text-color-highest, #f8fafc));
 }
 
 /* Universal Control Box-Model Isolation */
