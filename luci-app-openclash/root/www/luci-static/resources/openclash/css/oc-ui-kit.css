@@ -604,3 +604,67 @@ html[data-darkmode="true"] .oc .oc-log-terminal {
     color: var(--text-primary);
     box-sizing: border-box;
 }
+
+/* (11) Access Control Table Header & Button Isolation */
+.oc .ac-th {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    flex: 0 0 auto !important;
+    height: 32px !important;
+    min-height: 32px !important;
+    padding: 0 14px !important;
+    background: var(--bg-light) !important;
+    border-bottom: 1px solid var(--border-light) !important;
+    color: var(--text-secondary) !important;
+    font-size: 11.5px !important;
+    font-weight: 600 !important;
+    white-space: nowrap !important;
+    box-sizing: border-box !important;
+}
+
+.oc .ac-th-cell,
+html body .oc button.ac-th-cell {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 4px !important;
+    height: auto !important;
+    min-height: 0 !important;
+    line-height: 1.2 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    background: transparent !important;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    outline: none !important;
+    font: inherit !important;
+    color: inherit !important;
+    cursor: pointer !important;
+    white-space: nowrap !important;
+}
+
+.oc .ac-th-cell:disabled,
+html body .oc button.ac-th-cell:disabled {
+    cursor: default !important;
+}
+
+.oc .ac-th-cell:not(:disabled):hover,
+html body .oc button.ac-th-cell:not(:disabled):hover {
+    color: var(--primary-text, var(--primary-color)) !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+.oc .ac-th-cell .ac-sort-ind {
+    font-size: 8px !important;
+    line-height: normal !important;
+}
+
+.oc .ac-col-dev {
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+    justify-content: flex-start !important;
+    padding-left: 4px !important;
+}
