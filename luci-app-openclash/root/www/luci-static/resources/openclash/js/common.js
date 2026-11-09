@@ -105,10 +105,6 @@ function detectInitialAutoDark() {
 }
 
 function isDarkBackground(element) {
-    var cachedTheme = localStorage.getItem('oc-theme');
-    if (cachedTheme === 'dark') return true;
-    if (cachedTheme === 'light') return false;
-
     var style = window.getComputedStyle(element);
     var bgColor = style.backgroundColor;
     if (!bgColor || bgColor === 'transparent' || bgColor === 'rgba(0, 0, 0, 0)') {
@@ -119,27 +115,18 @@ function isDarkBackground(element) {
     return lum < 128;
 }
 
-/* palette ids, kept in sync with the panel list in status.js */
-var ocThemeNames = ['classic', 'cyan', 'indigo', 'graphite', 'amber', 'imperial', 'rose', 'smoky', 'custom'];
-
-// non-null while the colour picker shows an unsaved preview (set/cleared by the theme panel)
-var ocCustomPreviewHex = null;
-
 function ocApplyRootTheme() {
-    var t = localStorage.getItem('oc-theme') || 'auto',
-        d;
-    if (t === 'dark') {
-        d = true;
-    } else if (t === 'light') {
-        d = false;
-    } else {
-        d = document.body ? isDarkBackground(document.body) : detectInitialAutoDark();
+    try {
+        localStorage.removeItem('oc-theme');
+        localStorage.removeItem('oc-theme-name');
+        localStorage.removeItem('oc-theme-custom');
+    } catch (e) {}
+    document.documentElement.removeAttribute('data-oc-theme');
+    var d = detectInitialAutoDark();
+    if (document.body && !document.documentElement.getAttribute('data-darkmode') && !document.documentElement.getAttribute('data-theme')) {
+        d = isDarkBackground(document.body);
     }
     document.documentElement.setAttribute('data-darkmode', d ? 'true' : 'false');
-    var n = localStorage.getItem('oc-theme-name') || 'classic';
-    if (ocThemeNames.indexOf(n) < 0) n = 'classic';
-    document.documentElement.setAttribute('data-oc-theme', n);
-    ocApplyCustomAccent();
     var m = document.querySelector('meta[name="color-scheme"]');
     if (!m) {
         m = document.createElement('meta');
@@ -149,155 +136,14 @@ function ocApplyRootTheme() {
     m.content = d ? 'dark' : 'light';
 }
 
-function ocHexToRgb(hex) {
-    return [parseInt(hex.slice(1, 3), 16), parseInt(hex.slice(3, 5), 16), parseInt(hex.slice(5, 7), 16)];
-}
-
-// amt > 0 mixes towards white, amt < 0 towards black
-function ocShadeHex(hex, amt) {
-    var rgb = ocHexToRgb(hex).map(function(v) {
-        return Math.max(0, Math.min(255, Math.round(amt >= 0 ? v + (255 - v) * amt : v * (1 + amt))));
-    });
-    return '#' + rgb.map(function(v) {
-        return ('0' + v.toString(16)).slice(-2);
-    }).join('');
-}
-
-function ocHexToHsl(hex) {
-    var rgb = ocHexToRgb(hex).map(function(v) { return v / 255; }),
-        max = Math.max(rgb[0], rgb[1], rgb[2]),
-        min = Math.min(rgb[0], rgb[1], rgb[2]),
-        l = (max + min) / 2,
-        d = max - min,
-        h = 0,
-        s = 0;
-    if (d) {
-        s = d / (1 - Math.abs(2 * l - 1));
-        if (max === rgb[0]) h = (rgb[1] - rgb[2]) / d + (rgb[1] < rgb[2] ? 6 : 0);
-        else if (max === rgb[1]) h = (rgb[2] - rgb[0]) / d + 2;
-        else h = (rgb[0] - rgb[1]) / d + 4;
-        h *= 60;
-    }
-    return [h, s * 100, l * 100];
-}
-
-function ocHslHex(h, s, l) {
-    s /= 100;
-    l /= 100;
-    var c = (1 - Math.abs(2 * l - 1)) * s,
-        x = c * (1 - Math.abs(h / 60 % 2 - 1)),
-        m = l - c / 2,
-        rgb = h < 60 ? [c, x, 0] : h < 120 ? [x, c, 0] : h < 180 ? [0, c, x] : h < 240 ? [0, x, c] : h < 300 ? [x, 0, c] : [c, 0, x];
-    return '#' + rgb.map(function(v) {
-        return ('0' + Math.round((v + m) * 255).toString(16)).slice(-2);
-    }).join('');
-}
-
-function ocAccentVars(hex, dark) {
-    var base = dark ? ocShadeHex(hex, 0.25) : hex,
-        rgb = ocHexToRgb(base),
-        lum = rgb[0] * 0.2126 + rgb[1] * 0.7152 + rgb[2] * 0.0722,
-        hsl = ocHexToHsl(hex),
-        hue = hsl[0],
-        sat = hsl[1],
-        vars = '--primary-color:' + base + ';'
-            + '--btn-primary-hover:' + ocShadeHex(base, dark ? -0.15 : -0.12) + ';'
-            + '--text-on-primary:' + (lum > 170 ? '#1f2937' : '#ffffff') + ';'
-            + '--announcement-end:' + ocShadeHex(base, -0.35) + ';'
-            + '--radio-hover-bg:rgba(' + rgb.join(', ') + ',' + (dark ? '0.2' : '0.1') + ');'
-            + '--primary-a5:rgba(' + rgb.join(', ') + ',0.05);'
-            + '--primary-a10:rgba(' + rgb.join(', ') + ',0.1);'
-            + '--primary-a20:rgba(' + rgb.join(', ') + ',0.2);'
-            + '--primary-a30:rgba(' + rgb.join(', ') + ',0.3);'
-            + '--primary-a40:rgba(' + rgb.join(', ') + ',0.4);'
-            + '--primary-a50:rgba(' + rgb.join(', ') + ',0.5);'
-            + '--primary-a60:rgba(' + rgb.join(', ') + ',0.6);';
-    // surfaces and texts tinted by the accent hue, mirroring the named palettes
-    if (dark) {
-        vars += '--primary-bright:' + ocShadeHex(base, 0.15) + ';--primary-soft:' + ocShadeHex(base, 0.35) + ';'
-            + '--bg-white:' + ocHslHex(hue, Math.min(sat, 30), 11) + ';'
-            + '--bg-light:' + ocHslHex(hue, Math.min(sat, 30), 14) + ';'
-            + '--bg-gray:' + ocHslHex(hue, Math.min(sat, 28), 18) + ';'
-            + '--text-primary:' + ocHslHex(hue, Math.min(sat, 35), 94) + ';'
-            + '--text-secondary:' + ocHslHex(hue, Math.min(sat, 18), 70) + ';'
-            + '--text-title:' + ocHslHex(hue, Math.min(sat, 35), 92) + ';'
-            + '--border-light:' + ocHslHex(hue, Math.min(sat, 26), 24) + ';'
-            + '--switch-off-bg:' + ocHslHex(hue, Math.min(sat, 24), 28) + ';'
-            + '--tab-text-dark:' + ocHslHex(hue, Math.min(sat, 18), 70) + ';'
-            + '--tab-hover-dark-bg:' + ocHslHex(hue, Math.min(sat, 28), 18) + ';';
-    } else {
-        vars += '--bg-light:' + ocHslHex(hue, Math.min(sat, 35), 98) + ';'
-            + '--bg-gray:' + ocHslHex(hue, Math.min(sat, 35), 95) + ';'
-            + '--text-primary:' + ocHslHex(hue, Math.min(sat, 18), 16) + ';'
-            + '--text-secondary:' + ocHslHex(hue, Math.min(sat, 12), 44) + ';'
-            + '--text-title:' + ocHslHex(hue, Math.min(sat, 20), 14) + ';'
-            + '--border-light:' + ocHslHex(hue, Math.min(sat, 28), 90) + ';'
-            + '--switch-off-bg:' + ocHslHex(hue, Math.min(sat, 30), 92) + ';';
-    }
-    return vars;
-}
-
-function ocSafeHex(hex) {
-    hex = (hex || '').toLowerCase();
-    return /^#[0-9a-f]{6}$/.test(hex) ? hex : '#3b82f6';
-}
-
 function ocApplyCustomAccent() {
-    var styleEl = document.getElementById('oc-custom-theme'),
-        name = localStorage.getItem('oc-theme-name') || 'classic',
-        hex = ocCustomPreviewHex;
-    if (!hex && name !== 'custom') {
-        if (styleEl) styleEl.parentNode.removeChild(styleEl);
-        return;
-    }
-    hex = ocSafeHex(hex || localStorage.getItem('oc-theme-custom'));
-    if (!styleEl) {
-        styleEl = document.createElement('style');
-        styleEl.id = 'oc-custom-theme';
-        document.head.appendChild(styleEl);
-    }
-    styleEl.textContent = 'html[data-oc-theme="custom"] .oc{' + ocAccentVars(hex, false) + '}'
-        + 'html[data-darkmode="true"][data-oc-theme="custom"] .oc{' + ocAccentVars(hex, true) + '}';
+    var styleEl = document.getElementById('oc-custom-theme');
+    if (styleEl && styleEl.parentNode) styleEl.parentNode.removeChild(styleEl);
 }
 
-// the router-side copy (uci theme_mode/theme_name/theme_custom) wins on load so every
-// browser follows the theme that was saved once
-function ocSyncThemeFromUci() {
-    var xhr = new XMLHttpRequest();
-    xhr.open('GET', '/cgi-bin/luci/admin/services/openclash/theme_get', true);
-    xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState !== 4 || xhr.status !== 200) return;
-        var d = null;
-        try { d = JSON.parse(xhr.responseText); } catch (e) { return; }
-        if (!d) return;
-        var changed = false;
-        if (d.mode && d.mode !== (localStorage.getItem('oc-theme') || 'auto')) { localStorage.setItem('oc-theme', d.mode); changed = true; }
-        var remoteName = d.name || 'classic';
-        if (remoteName !== (localStorage.getItem('oc-theme-name') || 'classic')) { localStorage.setItem('oc-theme-name', remoteName); changed = true; }
-        if (d.custom && /^#[0-9a-f]{6}$/i.test(d.custom)) {
-            if (d.custom !== localStorage.getItem('oc-theme-custom')) { localStorage.setItem('oc-theme-custom', d.custom); changed = true; }
-        } else if (localStorage.getItem('oc-theme-custom')) {
-            localStorage.removeItem('oc-theme-custom');
-            changed = true;
-        }
-        if (!changed) return;
-        ocUpdateTheme();
-        if (typeof DarkModeDetector !== 'undefined') DarkModeDetector.init();
-        if (typeof StatsChart !== 'undefined' && StatsChart.refresh) StatsChart.refresh();
-    };
-    xhr.send();
-}
+function ocSyncThemeFromUci() {}
 
-function ocSaveThemeToUci() {
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', '/cgi-bin/luci/admin/services/openclash/theme_save', true);
-    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
-    xhr.send('mode=' + encodeURIComponent(localStorage.getItem('oc-theme') || 'auto')
-        + '&name=' + encodeURIComponent(localStorage.getItem('oc-theme-name') || 'classic')
-        + '&custom=' + encodeURIComponent(localStorage.getItem('oc-theme-custom') || ''));
-}
+function ocSaveThemeToUci() {}
 
 function ocInitTheme() {
     if (window.ocThemeInited) {
@@ -307,12 +153,9 @@ function ocInitTheme() {
     window.ocThemeInited = true;
 
     ocApplyRootTheme();
-    ocSyncThemeFromUci();
-
-    var needsCorrection = (localStorage.getItem('oc-theme') || 'auto') === 'auto';
 
     function ocDomReady() {
-        if (needsCorrection) ocApplyRootTheme();
+        ocApplyRootTheme();
         ocApplyEditorTheme();
         ocHideEmptyCbiElements();
         ocWrapCbiActions();
@@ -330,14 +173,12 @@ function ocUpdateTheme() {
     ocApplyEditorTheme();
 }
 
-// React to OS light/dark changes while the theme is on auto (register once per page)
+// React to OS light/dark changes (register once per page)
 if (window.matchMedia && !window.ocThemeMediaBound) {
     window.ocThemeMediaBound = true;
     window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function() {
-        if ((localStorage.getItem('oc-theme') || 'auto') === 'auto') {
-            ocApplyRootTheme();
-            if (document.body) ocUpdateTheme();
-        }
+        ocApplyRootTheme();
+        if (document.body) ocUpdateTheme();
     });
 }
 

@@ -276,22 +276,14 @@ function generateSparklineSVG(points, color, width, height) {
         },
 
         applyDarkMode: function() {
-            var sunIcon = document.getElementById('sun-icon');
-            var moonIcon = document.getElementById('moon-icon');
-            var autoIcon = document.getElementById('auto-icon');
-            if (sunIcon && moonIcon && autoIcon) {
-                var theme = localStorage.getItem('oc-theme') || 'auto';
-                sunIcon.classList.add('oc-hidden');
-                moonIcon.classList.add('oc-hidden');
-                autoIcon.classList.add('oc-hidden');
-
-                if (theme === 'light') {
-                    sunIcon.classList.remove('oc-hidden');
-                } else if (theme === 'dark') {
-                    moonIcon.classList.remove('oc-hidden');
-                } else {
-                    autoIcon.classList.remove('oc-hidden');
+            if (typeof ocApplyRootTheme === 'function') {
+                ocApplyRootTheme();
+            } else {
+                var isDark = typeof detectInitialAutoDark === 'function' ? detectInitialAutoDark() : false;
+                if (document.body && typeof isDarkBackground === 'function') {
+                    isDark = isDarkBackground(document.body);
                 }
+                document.documentElement.setAttribute('data-darkmode', isDark ? 'true' : 'false');
             }
         }
     };
@@ -6489,188 +6481,7 @@ function generateSparklineSVG(points, color, width, height) {
         return false;
     }
 
-    var themePanel = null;
-    var themePanelOpen = false;
-
-    var themeChoices = [
-        { id: 'classic', name: '<%:Classic Blue%>', sw: ['#3b82f6', '#60a5fa'] },
-        { id: 'cyan', name: '<%:Nocturne Cyan%>', sw: ['#0e7490', '#22d3ee'] },
-        { id: 'indigo', name: '<%:Indigo Voyage%>', sw: ['#4f46e5', '#818cf8'] },
-        { id: 'graphite', name: '<%:Graphite Silver%>', sw: ['#374151', '#9ca3af'] },
-        { id: 'amber', name: '<%:Ember Amber%>', sw: ['#b45309', '#f59e0b'] },
-        { id: 'imperial', name: '<%:Imperial Purple%>', sw: ['#6a0dad', '#c084fc'] },
-        { id: 'rose', name: '<%:Sweet Rose%>', sw: ['#d6256a', '#f06292'] },
-        { id: 'smoky', name: '<%:Smoky Pink%>', sw: ['#a8557d', '#e89aaf'] }
-    ];
-
-    function buildThemePanel() {
-        var panel = document.createElement('div');
-        panel.className = 'oc oc-theme-panel oc-hidden';
-        panel.id = 'oc-theme-panel';
-        panel.setAttribute('role', 'dialog');
-        panel.setAttribute('aria-label', '<%:Switch Theme%>');
-
-        var themes = themeChoices.map(function(t) {
-            return '<button type="button" class="tp-theme" data-theme="' + t.id + '" aria-pressed="false">'
-                + '<span class="tp-sw"><i style="background:' + t.sw[0] + '"></i><i style="background:' + t.sw[1] + '"></i></span>'
-                + '<span class="tp-name">' + t.name + '</span></button>';
-        }).join('');
-
-        panel.innerHTML = '<div class="tp-head">'
-            + '<div class="tp-title"><%:Switch Theme%></div>'
-            + '<button type="button" class="icon-btn" id="tp-close" title="<%:Close%>"><svg width="14" height="14"><use href="#oc-icon-close"/></svg></button>'
-            + '</div>'
-            + '<div class="tp-label"><%:Mode%></div>'
-            + '<div class="tp-seg" id="tp-modes">'
-            + '<button type="button" class="tp-opt" data-mode="light" aria-pressed="false"><%:Light%></button>'
-            + '<button type="button" class="tp-opt" data-mode="dark" aria-pressed="false"><%:Dark%></button>'
-            + '<button type="button" class="tp-opt" data-mode="auto" aria-pressed="false"><%:Auto%></button>'
-            + '</div>'
-            + '<div class="tp-label"><span><%:Theme%></span><span class="tp-hint"><%:Applies to all OpenClash pages%></span></div>'
-            + '<div class="tp-grid" id="tp-themes">' + themes + '</div>'
-            + '<div class="tp-custom" id="tp-custom">'
-            + '<label class="tp-custom-main" for="tp-color">'
-            + '<span class="tp-sw" id="tp-custom-sw"><i></i><i></i></span>'
-            + '<span class="tp-name"><%:Custom%></span>'
-            + '<span class="tp-hex" id="tp-custom-hex"></span>'
-            + '</label>'
-            + '<button type="button" class="tp-custom-apply" id="tp-custom-apply"><%:Apply%></button>'
-            + '<input type="color" id="tp-color" value="#3b82f6">'
-            + '</div>';
-
-        panel.addEventListener('click', function(e) {
-            var t = e.target;
-            while (t && t !== panel && !t.classList.contains('tp-opt') && !t.classList.contains('tp-theme')) t = t.parentNode;
-            if (!t || t === panel) return;
-            if (t.classList.contains('tp-opt')) {
-                localStorage.setItem('oc-theme', t.getAttribute('data-mode'));
-                ocUpdateTheme();
-                DarkModeDetector.init();
-                StatsChart.refresh();
-            } else {
-                ocCustomPreviewHex = null;
-                localStorage.setItem('oc-theme-name', t.getAttribute('data-theme'));
-                localStorage.removeItem('oc-theme-custom');
-                ocApplyRootTheme();
-                StatsChart.refresh();
-            }
-            ocSaveThemeToUci();
-            syncThemePanel();
-        });
-
-        panel.querySelector('#tp-close').addEventListener('click', function() { setThemePanel(false); });
-        var colorInput = panel.querySelector('#tp-color');
-        function previewCustom(hex) {
-            hex = hex.toLowerCase();
-            var sw = panel.querySelectorAll('#tp-custom-sw i');
-            sw[0].style.background = hex;
-            sw[1].style.background = ocShadeHex(hex, 0.25);
-            panel.querySelector('#tp-custom-hex').textContent = hex;
-        }
-        colorInput.addEventListener('input', function() { previewCustom(colorInput.value); });
-        colorInput.addEventListener('change', function() {
-            var hex = colorInput.value.toLowerCase();
-            previewCustom(hex);
-            ocCustomPreviewHex = hex;
-            document.documentElement.setAttribute('data-oc-theme', 'custom');
-            ocApplyCustomAccent();
-            StatsChart.refresh();
-        });
-        panel.querySelector('#tp-custom-apply').addEventListener('click', function() {
-            ocCustomPreviewHex = null;
-            localStorage.setItem('oc-theme-custom', colorInput.value.toLowerCase());
-            localStorage.setItem('oc-theme-name', 'custom');
-            ocApplyRootTheme();
-            ocSaveThemeToUci();
-            StatsChart.refresh();
-            setThemePanel(false);
-        });
-
-        document.body.appendChild(panel);
-        return panel;
-    }
-
-    function syncThemePanel() {
-        if (!themePanel) return;
-        var mode = localStorage.getItem('oc-theme') || 'auto';
-        var name = localStorage.getItem('oc-theme-name') || 'classic';
-        var opts = themePanel.querySelectorAll('.tp-opt');
-        for (var i = 0; i < opts.length; i++) {
-            var on = opts[i].getAttribute('data-mode') === mode;
-            opts[i].classList.toggle('on', on);
-            opts[i].setAttribute('aria-pressed', on ? 'true' : 'false');
-        }
-        var cards = themePanel.querySelectorAll('.tp-theme');
-        for (var j = 0; j < cards.length; j++) {
-            var sel = cards[j].getAttribute('data-theme') === name;
-            cards[j].classList.toggle('on', sel);
-            cards[j].setAttribute('aria-pressed', sel ? 'true' : 'false');
-        }
-        var custom = themePanel.querySelector('#tp-custom');
-        if (custom) {
-            var hex, pair;
-            if (name === 'custom') {
-                hex = ocSafeHex(localStorage.getItem('oc-theme-custom'));
-                pair = [hex, ocShadeHex(hex, 0.25)];
-            } else {
-                var choice = null;
-                for (var k = 0; k < themeChoices.length; k++) {
-                    if (themeChoices[k].id === name) choice = themeChoices[k];
-                }
-                pair = choice ? choice.sw : ['#3b82f6', '#60a5fa'];
-                hex = pair[0];
-            }
-            custom.classList.toggle('on', name === 'custom');
-            themePanel.querySelector('#tp-color').value = hex;
-            var sw = custom.querySelectorAll('.tp-sw i');
-            sw[0].style.background = pair[0];
-            sw[1].style.background = pair[1];
-            themePanel.querySelector('#tp-custom-hex').textContent = hex;
-        }
-    }
-
-    function positionThemePanel() {
-        var btn = document.getElementById('theme-toggle');
-        if (!themePanel || !btn) return;
-        var r = btn.getBoundingClientRect();
-        var w = themePanel.offsetWidth;
-        var h = themePanel.offsetHeight;
-        var left = Math.max(8, Math.min(r.right - w, window.innerWidth - w - 8));
-        var top = r.bottom + 8;
-        if (top + h > window.innerHeight - 8) top = Math.max(8, r.top - h - 8);
-        themePanel.style.left = left + 'px';
-        themePanel.style.top = top + 'px';
-    }
-
-    function setThemePanel(open) {
-        if (!themePanel) themePanel = buildThemePanel();
-        themePanelOpen = open;
-        themePanel.classList.toggle('oc-hidden', !open);
-        var btn = document.getElementById('theme-toggle');
-        if (btn) btn.setAttribute('aria-expanded', open ? 'true' : 'false');
-        if (open) {
-            syncThemePanel();
-            positionThemePanel();
-        } else {
-            if (ocCustomPreviewHex) {
-                ocCustomPreviewHex = null;
-                ocApplyRootTheme();
-            }
-            if (btn && themePanel.contains(document.activeElement)) {
-                btn.focus();
-            }
-        }
-    }
-
-    function openThemePanel(btn) {
-        if (!themePanel) {
-            themePanel = buildThemePanel();
-            document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape' && themePanelOpen) setThemePanel(false);
-            });
-            window.addEventListener('resize', function() { if (themePanelOpen) positionThemePanel(); });
-            window.addEventListener('scroll', function() { if (themePanelOpen) positionThemePanel(); }, true);
-        }
-        setThemePanel(!themePanelOpen);
+    function openThemePanel() {
         return false;
     }
+    function setThemePanel() {}

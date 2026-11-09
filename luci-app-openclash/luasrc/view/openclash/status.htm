@@ -1,6 +1,7 @@
 <html>
 <head>
 <script src="/cgi-bin/luci/admin/services/openclash/translate_js?f=common&v=@OPENCLASH_VERSION@&l=<%=luci.i18n.context.lang%>"></script>
+<link rel="stylesheet" href="/luci-static/resources/openclash/css/oc-ui-kit.css?v=@OPENCLASH_VERSION@">
 <link rel="stylesheet" href="/luci-static/resources/openclash/css/oc-common.css?v=@OPENCLASH_VERSION@">
 <link rel="stylesheet" href="/luci-static/resources/openclash/css/oc-client.css?v=@OPENCLASH_VERSION@">
 </head>
@@ -110,13 +111,6 @@
                                         <div class="dropdown-item-slot" id="_reload_firewall_btn"><%:Collecting data...%></div>
                                         <div class="dropdown-item-slot" id="_flush_dns_cache_btn"><%:Collecting data...%></div>
                                         <div class="dropdown-item-slot" id="_one_key_update_btn"><%:Collecting data...%></div>
-                                        <div class="dropdown-divider"></div>
-                                        <button type="button" class="dropdown-item-btn theme-toggle-btn" id="theme-toggle" title="<%:Switch Theme%>" aria-haspopup="dialog" aria-expanded="false" onclick="return openThemePanel(this)">
-                                            <svg id="sun-icon" width="14" height="14"><title><%:Light Mode%></title><use href="#oc-icon-sun"/></svg>
-                                            <svg id="moon-icon" width="14" height="14" class="oc-hidden"><title><%:Dark Mode%></title><use href="#oc-icon-moon"/></svg>
-                                            <svg id="auto-icon" width="14" height="14" class="oc-hidden"><title><%:Auto Mode%></title><use href="#oc-icon-auto-theme"/></svg>
-                                            <span><%:Switch Theme%></span>
-                                        </button>
                                     </div>
                                 </div>
                             </div>

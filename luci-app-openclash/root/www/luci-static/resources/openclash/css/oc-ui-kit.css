@@ -1,0 +1,570 @@
+/* ==========================================================================
+ * OpenClash Atomic UI Kit (oc-ui-kit.css)
+ * Universal Bento & Flat Control System for OpenClash LuCI Interface
+ * Zero Box-in-Box, Zero Hardcoded Theme Overrides, Pure Semantic Design Tokens
+ * ========================================================================== */
+
+/* --------------------------------------------------------------------------
+ * 1. Design Tokens & Theme Variables
+ * -------------------------------------------------------------------------- */
+.oc,
+.oc-ver-pills-top {
+    /* Accent Color Fallback Chain */
+    --primary-color: var(--primary-color-high, var(--primary, var(--main-color, #3b82f6)));
+    --btn-primary-hover: var(--primary-hover, #2563eb);
+    --text-on-primary: #ffffff;
+
+    /* Primary Alpha Variations */
+    --primary-a5: rgba(59, 130, 246, 0.05);
+    --primary-a10: rgba(59, 130, 246, 0.1);
+    --primary-a15: rgba(59, 130, 246, 0.15);
+    --primary-a20: rgba(59, 130, 246, 0.2);
+    --primary-a30: rgba(59, 130, 246, 0.3);
+
+    /* Surfaces & Backgrounds */
+    --bg-white: var(--s1, #ffffff);
+    --bg-light: var(--s3, #f8fafc);
+    --bg-gray: var(--s2, #f1f5f9);
+    --hover-bg: var(--s3, #f3f4f6);
+    --switch-off-bg: var(--s4, #cbd5e1);
+
+    /* Borders & Lines */
+    --border-light: var(--line, #e2e8f0);
+    --border-color: var(--line-2, #cbd5e1);
+
+    /* Text Colors */
+    --text-primary: var(--text, #1e293b);
+    --text-secondary: var(--text-2, #64748b);
+    --text-title: #0f172a;
+
+    /* Semantics */
+    --success-color: #059669;
+    --success-bg: rgba(5, 150, 105, 0.1);
+    --warning-color: #f59e0b;
+    --warning-bg: rgba(245, 158, 11, 0.1);
+    --error-color: #dc2626;
+    --error-bg: rgba(220, 38, 38, 0.1);
+    --info-color: #3b82f6;
+    --info-bg: rgba(59, 130, 246, 0.1);
+
+    /* Radii Tokens */
+    --oc-radius-card: 12px;
+    --oc-radius-md: 8px;
+    --oc-radius-sm: 6px;
+    --oc-radius-pill: 999px;
+
+    /* Shadows */
+    --oc-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
+    --oc-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.06), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    --oc-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
+
+    /* Transitions */
+    --oc-transition-fast: 0.15s ease;
+    --oc-transition-norm: 0.2s ease;
+}
+
+/* Dark Mode Tokens */
+html[data-darkmode="true"] .oc,
+html[data-darkmode="true"] .oc-ver-pills-top {
+    --bg-white: var(--s1, #18181b);
+    --bg-light: var(--s2, #22252a);
+    --bg-gray: var(--s3, #27272a);
+    --hover-bg: var(--s3, #2a2d33);
+    --switch-off-bg: var(--s4, #353a41);
+
+    --border-light: var(--line, #262a2f);
+    --border-color: var(--line-2, #353a41);
+
+    --text-primary: var(--text, #e8eaed);
+    --text-secondary: var(--text-2, #a9afb7);
+    --text-title: #f8fafc;
+
+    --success-bg: rgba(52, 211, 153, 0.15);
+    --warning-bg: rgba(251, 191, 36, 0.15);
+    --error-bg: rgba(248, 113, 113, 0.15);
+    --info-bg: rgba(96, 165, 250, 0.15);
+
+    --oc-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);
+    --oc-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+    --oc-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4);
+}
+
+/* --------------------------------------------------------------------------
+ * 2. Universal Control Box-Model Isolation
+ * -------------------------------------------------------------------------- */
+.oc input[type="radio"]:not(.cbi-button-group input):not(.stats-tabs input):not(#stats-tabs input),
+.oc input[type="checkbox"]:not(.oc-switch input):not(.oc-ui-switch input):not(.plugin-toggle-switch input),
+.oc .mode-radio-label input[type="radio"] {
+    min-height: 0 !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    position: relative !important;
+    top: 0 !important;
+    right: 0 !important;
+    left: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    flex-shrink: 0 !important;
+    aspect-ratio: 1 / 1 !important;
+}
+
+.oc .cbi-button-group input[type="radio"],
+.oc #stats-tabs input[type="radio"],
+.oc .stats-tabs input[type="radio"] {
+    position: absolute !important;
+    width: 0 !important;
+    height: 0 !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.oc button,
+.oc .oc-hero-btn,
+.oc .oc-icon-btn,
+.oc .oc-notice-btn,
+.oc .ac-dir-opt,
+.oc .ac-key-btn,
+.oc .oc-btn {
+    text-transform: none !important;
+    box-sizing: border-box !important;
+}
+
+/* --------------------------------------------------------------------------
+ * 3. Atomic Components Library
+ * -------------------------------------------------------------------------- */
+
+/* (1) Card & Divided Grid (Zero Box-in-Box) */
+.oc .oc-card {
+    background: var(--bg-white);
+    border: 1px solid var(--border-light);
+    border-radius: var(--oc-radius-card);
+    box-shadow: var(--oc-shadow-sm);
+    box-sizing: border-box;
+    overflow: hidden;
+    transition: border-color var(--oc-transition-norm), box-shadow var(--oc-transition-norm);
+}
+
+.oc .oc-grid-divided {
+    display: grid;
+    background: var(--border-light);
+    gap: 1px;
+    border-radius: var(--oc-radius-md);
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+.oc .oc-cell {
+    background: var(--bg-white);
+    padding: 10px 14px;
+    box-sizing: border-box;
+    transition: background var(--oc-transition-fast);
+}
+
+.oc .oc-cell:hover {
+    background: var(--hover-bg);
+}
+
+/* (2) Segmented Control (Pill & Track) */
+.oc .oc-seg-group {
+    display: inline-flex;
+    align-items: center;
+    background: var(--bg-light);
+    border: 1px solid var(--border-light);
+    border-radius: var(--oc-radius-pill);
+    padding: 2px;
+    gap: 2px;
+    box-sizing: border-box;
+}
+
+.oc .oc-seg-btn {
+    appearance: none;
+    border: none;
+    background: transparent;
+    color: var(--text-secondary);
+    font-size: 12px;
+    font-weight: 500;
+    padding: 4px 12px;
+    border-radius: var(--oc-radius-pill);
+    cursor: pointer;
+    line-height: 1.4;
+    transition: background var(--oc-transition-fast), color var(--oc-transition-fast), box-shadow var(--oc-transition-fast);
+    outline: none;
+}
+
+.oc .oc-seg-btn:hover {
+    color: var(--text-primary);
+}
+
+.oc .oc-seg-btn.active,
+.oc .oc-seg-btn[aria-pressed="true"] {
+    background: var(--primary-color) !important;
+    color: var(--text-on-primary) !important;
+    box-shadow: var(--oc-shadow-sm);
+}
+
+/* (3) Button & Icon Button */
+.oc .oc-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    height: 32px;
+    padding: 0 14px;
+    font-size: 12.5px;
+    font-weight: 500;
+    border-radius: var(--oc-radius-sm);
+    border: 1px solid var(--border-color);
+    background: var(--bg-white);
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: all var(--oc-transition-fast);
+    outline: none;
+    user-select: none;
+}
+
+.oc .oc-btn:hover {
+    background: var(--hover-bg) !important;
+    border-color: var(--primary-color) !important;
+    color: var(--primary-color) !important;
+}
+
+.oc .oc-btn-primary {
+    background: var(--primary-color) !important;
+    border-color: var(--primary-color) !important;
+    color: var(--text-on-primary) !important;
+}
+
+.oc .oc-btn-primary:hover {
+    filter: brightness(1.08) !important;
+    color: var(--text-on-primary) !important;
+}
+
+.oc .oc-btn-danger {
+    background: var(--error-bg) !important;
+    border-color: var(--error-color) !important;
+    color: var(--error-color) !important;
+}
+
+.oc .oc-btn-danger:hover {
+    background: var(--error-color) !important;
+    color: #ffffff !important;
+}
+
+.oc .oc-icon-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    padding: 0;
+    border-radius: var(--oc-radius-sm);
+    border: 1px solid var(--border-light);
+    background: var(--bg-white);
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all var(--oc-transition-fast);
+}
+
+.oc .oc-icon-btn:hover {
+    background: var(--hover-bg) !important;
+    border-color: var(--primary-color) !important;
+    color: var(--primary-color) !important;
+}
+
+/* (4) Native Select & Dropdown */
+.oc .oc-select,
+.oc .oc-native-select,
+.oc .hero-config-left .config-select {
+    -webkit-appearance: none !important;
+    appearance: none !important;
+    height: 32px !important;
+    padding: 0 28px 0 10px !important;
+    border-radius: var(--oc-radius-sm) !important;
+    border: 1px solid var(--border-color) !important;
+    background-color: var(--bg-white) !important;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 8px center !important;
+    background-size: 14px 14px !important;
+    color: var(--text-primary) !important;
+    font-size: 12.5px !important;
+    cursor: pointer !important;
+    box-sizing: border-box !important;
+    transition: border-color var(--oc-transition-fast), box-shadow var(--oc-transition-fast) !important;
+}
+
+html[data-darkmode="true"] .oc .oc-select,
+html[data-darkmode="true"] .oc .oc-native-select,
+html[data-darkmode="true"] .oc .hero-config-left .config-select {
+    background-color: var(--bg-light) !important;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23a9afb7' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") !important;
+}
+
+.oc .oc-select:hover,
+.oc .oc-native-select:hover,
+.oc .hero-config-left .config-select:hover {
+    border-color: var(--primary-color) !important;
+}
+
+.oc .oc-select:focus,
+.oc .oc-native-select:focus,
+.oc .hero-config-left .config-select:focus {
+    border-color: var(--primary-color) !important;
+    box-shadow: 0 0 0 2px var(--primary-a20) !important;
+    outline: none !important;
+}
+
+.oc .oc-dropdown-menu {
+    position: absolute;
+    z-index: 1000;
+    min-width: 160px;
+    background: var(--bg-white);
+    border: 1px solid var(--border-light);
+    border-radius: var(--oc-radius-md);
+    box-shadow: var(--oc-shadow-md);
+    padding: 4px;
+    box-sizing: border-box;
+}
+
+/* (5) Toggle Switch */
+.oc .oc-switch,
+.oc .plugin-toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 38px;
+    height: 20px;
+    flex-shrink: 0;
+}
+
+.oc .oc-switch input,
+.oc .plugin-toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+    position: absolute;
+}
+
+.oc .oc-switch-slider,
+.oc .plugin-toggle-slider {
+    position: absolute;
+    cursor: pointer;
+    inset: 0;
+    background-color: var(--switch-off-bg);
+    border-radius: var(--oc-radius-pill);
+    transition: background-color var(--oc-transition-norm);
+}
+
+.oc .oc-switch-slider::before,
+.oc .plugin-toggle-slider::before {
+    position: absolute;
+    content: '';
+    height: 16px;
+    width: 16px;
+    left: 2px;
+    bottom: 2px;
+    background-color: #ffffff;
+    border-radius: 50%;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    transition: transform var(--oc-transition-norm);
+}
+
+.oc .oc-switch input:checked + .oc-switch-slider,
+.oc .plugin-toggle-switch input:checked + .plugin-toggle-slider {
+    background-color: var(--primary-color);
+}
+
+.oc .oc-switch input:checked + .oc-switch-slider::before,
+.oc .plugin-toggle-switch input:checked + .plugin-toggle-slider::before {
+    transform: translateX(18px);
+}
+
+/* (6) Status & Version Pill */
+.oc .oc-status-pill,
+.oc .oc-badge-pill,
+.version-display {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    height: 22px;
+    padding: 0 8px;
+    border-radius: var(--oc-radius-pill);
+    font-size: 11.5px;
+    font-weight: 500;
+    border: 1px solid var(--border-light);
+    background: var(--bg-light);
+    color: var(--text-secondary);
+    box-sizing: border-box;
+    white-space: nowrap;
+    text-decoration: none !important;
+}
+
+.oc .oc-status-pill.status-running {
+    border-color: rgba(5, 150, 105, 0.3);
+    background: var(--success-bg);
+    color: var(--success-color);
+}
+
+.oc .oc-status-pill.status-stopped {
+    border-color: rgba(220, 38, 38, 0.3);
+    background: var(--error-bg);
+    color: var(--error-color);
+}
+
+/* (7) Modern Table & List Row */
+.oc .oc-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    box-sizing: border-box;
+}
+
+.oc .oc-table th {
+    background: var(--bg-light);
+    color: var(--text-secondary);
+    font-weight: 600;
+    font-size: 12px;
+    padding: 8px 12px;
+    text-align: left;
+    border-bottom: 1px solid var(--border-light);
+}
+
+.oc .oc-table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border-light);
+    color: var(--text-primary);
+    font-size: 12.5px;
+}
+
+.oc .oc-table tr:last-child td {
+    border-bottom: none;
+}
+
+.oc .oc-table tr:hover td {
+    background: var(--hover-bg);
+}
+
+.oc .oc-list-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--border-light);
+    box-sizing: border-box;
+    transition: background var(--oc-transition-fast);
+}
+
+.oc .oc-list-row:last-child {
+    border-bottom: none;
+}
+
+.oc .oc-list-row:hover {
+    background: var(--hover-bg);
+}
+
+/* (8) Modal & Backdrop */
+.oc-modal-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 20050;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    box-sizing: border-box;
+}
+
+.oc-modal {
+    position: relative;
+    width: 100%;
+    max-width: 640px;
+    max-height: calc(100vh - 32px);
+    background: var(--bg-white);
+    border: 1px solid var(--border-light);
+    border-radius: var(--oc-radius-card);
+    box-shadow: var(--oc-shadow-lg);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+.oc-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--border-light);
+    background: var(--bg-light);
+    box-sizing: border-box;
+}
+
+.oc-modal-header h3,
+.oc-modal-header .oc-modal-title {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-title);
+}
+
+.oc-modal-body {
+    padding: 16px 18px;
+    overflow-y: auto;
+    flex: 1 1 auto;
+    color: var(--text-primary);
+    box-sizing: border-box;
+}
+
+.oc-modal-footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 12px 18px;
+    border-top: 1px solid var(--border-light);
+    background: var(--bg-light);
+    box-sizing: border-box;
+}
+
+/* (9) Code & Log Terminal Box */
+.oc .oc-code-box,
+.oc .oc-log-terminal {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    font-size: 12px;
+    line-height: 1.5;
+    background: #0f172a;
+    color: #e2e8f0;
+    border: 1px solid #1e293b;
+    border-radius: var(--oc-radius-md);
+    padding: 12px 14px;
+    overflow: auto;
+    box-sizing: border-box;
+    white-space: pre-wrap;
+    word-break: break-all;
+}
+
+html[data-darkmode="true"] .oc .oc-code-box,
+html[data-darkmode="true"] .oc .oc-log-terminal {
+    background: #090d16;
+    border-color: #1a2234;
+}
+
+/* (10) Popover & Tooltip */
+.oc .oc-popover {
+    position: absolute;
+    z-index: 10100;
+    background: var(--bg-white);
+    border: 1px solid var(--border-light);
+    border-radius: var(--oc-radius-md);
+    box-shadow: var(--oc-shadow-md);
+    padding: 10px 12px;
+    font-size: 12px;
+    color: var(--text-primary);
+    box-sizing: border-box;
+}
