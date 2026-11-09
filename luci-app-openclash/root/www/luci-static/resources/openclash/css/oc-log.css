@@ -17,9 +17,9 @@
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    padding: 16px 20px;
-    border-bottom: 1px solid var(--border-light, #e2e8f0);
-    background: var(--bg-gray, #f1f5f9);
+    padding: 12px 16px !important;
+    border-bottom: 1px solid var(--border-light) !important;
+    background: transparent !important;
     min-width: 0;
     box-shadow: none;
     position: relative;
@@ -29,13 +29,13 @@
 #tab-header ul.oc-tabmenu {
     display: flex;
     width: 100%;
-    background: var(--bg-gray, #f1f5f9);
-    border-radius: 8px;
-    border-bottom: none !important;
-    border: none !important;
-    gap: 5px;
+    background: var(--bg-light) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 8px !important;
+    gap: 3px !important;
     margin: 0;
-    padding: 0;
+    padding: 3px !important;
+    box-sizing: border-box;
 }
 
 #tab-header ul.oc-tabmenu li {
@@ -46,20 +46,20 @@
     align-items: center;
     justify-content: center;
     gap: 8px;
-    padding: 12px 8px;
-    height: 40px;
+    padding: 0 8px;
+    height: 34px !important;
     font-weight: 500;
-    color: var(--text-secondary, #64748b);
-    background: transparent;
-    border: 1px solid var(--border-light, #e2e8f0);
-    border-radius: 8px;
+    color: var(--text-secondary) !important;
+    background: transparent !important;
+    border: none !important;
+    border-radius: 6px !important;
     cursor: pointer;
     transition: var(--transition-ui);
-    margin: 0;
+    margin: 0 !important;
     user-select: none;
     position: relative;
     box-sizing: border-box;
-    font-size: 14px;
+    font-size: 13.5px;
 }
 
 #tab-header ul.oc-tabmenu li a svg {
@@ -70,39 +70,39 @@
 }
 
 #tab-header ul.oc-tabmenu li.oc-tab {
-    background: var(--primary-color, #3b82f6);
-    color: var(--text-on-primary, #fff);
+    background: var(--primary-color) !important;
+    color: var(--text-on-primary, #ffffff) !important;
     font-weight: 600;
     z-index: 2;
-    border-radius: 6px;
-    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .03);
+    border-radius: 6px !important;
+    box-shadow: none !important;
 }
 
 #tab-header ul.oc-tabmenu li.oc-tab a {
-    color: var(--text-on-primary, #fff) !important;
+    color: var(--text-on-primary, #ffffff) !important;
     font-weight: 600;
 }
 
 #tab-header ul.oc-tabmenu li.oc-tab-disabled {
-    color: var(--text-on-primary, #fff);
-    background: var(--bg-light);
-    opacity: .7;
+    color: var(--text-secondary) !important;
+    background: transparent !important;
+    opacity: 1 !important;
     cursor: pointer;
 }
 
 #tab-header ul.oc-tabmenu li.oc-tab-disabled a {
-    color: var(--text-primary, #000) !important;
+    color: var(--text-secondary) !important;
 }
 
 #tab-header ul.oc-tabmenu li:not(.oc-tab):hover,
 #tab-header ul.oc-tabmenu li:not(.oc-tab):focus {
-    color: var(--primary-color, #3b82f6);
-    background: var(--primary-a10, rgba(59, 130, 246, .1));
+    color: var(--primary-text, var(--primary-color)) !important;
+    background: var(--primary-a10) !important;
 }
 
 #tab-header ul.oc-tabmenu li:not(.oc-tab):hover a,
 #tab-header ul.oc-tabmenu li:not(.oc-tab):focus a {
-    color: var(--primary-color, #3b82f6) !important;
+    color: var(--primary-text, var(--primary-color)) !important;
 }
 
 #tab-header ul.oc-tabmenu li a {

@@ -178,9 +178,10 @@ end
         display: flex;
         align-items: center;
         justify-content: flex-start;
-        padding: 16px 20px 8px;
-        border: none;
-        background: var(--bg-gray, #f1f5f9);
+        padding: 12px 16px !important;
+        border: none !important;
+        border-bottom: 1px solid var(--border-light) !important;
+        background: transparent !important;
         min-width: 0;
         box-shadow: none;
         position: relative;
@@ -190,12 +191,14 @@ end
     #tab-header-<%=self.config%>-<%=self.sectiontype%> ul{
         display: flex;
         width: 100%;
-        background: var(--bg-gray, #f1f5f9);
-        border-radius: 8px;
-        gap: 5px;
+        background: var(--bg-light) !important;
+        border: 1px solid var(--border-color) !important;
+        border-radius: 8px !important;
+        gap: 3px !important;
         margin: 0;
-        padding: 0;
+        padding: 3px !important;
         overflow-x: auto;
+        box-sizing: border-box;
     }
 
     #tab-header-<%=self.config%>-<%=self.sectiontype%> ul::-webkit-scrollbar{
@@ -220,28 +223,28 @@ end
         justify-content: center;
         gap: 8px;
         padding: 0 8px;
-        height: 40px;
+        height: 34px !important;
         font-size: 13px;
-        font-weight: 400;
-        color: var(--text-secondary, #64748b);
-        background: transparent;
-        border: 1px solid var(--border-light, #e2e8f0);
-        border-radius: 8px;
+        font-weight: 500;
+        color: var(--text-secondary) !important;
+        background: transparent !important;
+        border: none !important;
+        border-radius: 6px !important;
         cursor: pointer;
         transition: all 0.18s;
-        margin: 0 0 5px;
+        margin: 0 !important;
         user-select: none;
         position: relative;
         box-sizing: border-box;
     }
 
     #tab-header-<%=self.config%>-<%=self.sectiontype%> ul li.oc-tab{
-        background: var(--primary-color, #3b82f6);
-        color: var(--text-on-primary, #fff);
+        background: var(--primary-color) !important;
+        color: var(--text-on-primary, #ffffff) !important;
         font-weight: 600;
         z-index: 2;
-        border-radius: 6px;
-        box-shadow: 0 1px 2px 0 rgba(0,0,0,0.03);
+        border-radius: 6px !important;
+        box-shadow: none !important;
     }
 
     #tab-header-<%=self.config%>-<%=self.sectiontype%> ul li a{
@@ -268,30 +271,30 @@ end
     }
 
     #tab-header-<%=self.config%>-<%=self.sectiontype%> ul li.oc-tab > a{
-        color: var(--text-on-primary, #fff);
-        font-weight: 500;
+        color: var(--text-on-primary, #ffffff) !important;
+        font-weight: 600;
     }
 
     #tab-header-<%=self.config%>-<%=self.sectiontype%> ul li.oc-tab-disabled{
-        color: var(--text-on-primary, #fff);
-        background: var(--bg-light, #f9f9f9);
-        opacity: 0.7;
+        color: var(--text-secondary) !important;
+        background: transparent !important;
+        opacity: 1 !important;
         cursor: pointer;
     }
 
     #tab-header-<%=self.config%>-<%=self.sectiontype%> ul li.oc-tab-disabled a{
-        color: var(--text-primary, #000);
+        color: var(--text-secondary) !important;
     }
 
     #tab-header-<%=self.config%>-<%=self.sectiontype%> ul li:not(.oc-tab):hover,
     #tab-header-<%=self.config%>-<%=self.sectiontype%> ul li:not(.oc-tab):focus{
-        color: var(--primary-color, #3b82f6);
-        background: var(--primary-a10, rgba(59,130,246,0.10));
+        color: var(--primary-text, var(--primary-color)) !important;
+        background: var(--primary-a10) !important;
     }
 
     #tab-header-<%=self.config%>-<%=self.sectiontype%> ul li:not(.oc-tab):hover a,
     #tab-header-<%=self.config%>-<%=self.sectiontype%> ul li:not(.oc-tab):focus a{
-        color: var(--primary-color, #3b82f6);
+        color: var(--primary-text, var(--primary-color)) !important;
     }
 
     #tab-content .dom-<%=self.config%>-<%=self.sectiontype%>{

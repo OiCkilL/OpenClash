@@ -43,18 +43,27 @@
 [data-page^="admin-services-openclash"] .oc,
 .oc {
     /* ── Background & Text ── */
-    --bg-white: #ffffff;
-    --bg-light: #f8fafc;
-    --bg-gray: #f1f5f9;
-    --text-primary: #374151;
-    --text-secondary: #64748b;
-    --text-title: #4d4d4d;
+    --oc-card-bg: var(--oc-host-card-bg, var(--bg-white));
+    --bg-white: var(--oc-host-bg-white, var(--background-color-high, #ffffff));
+    --bg-light: var(--oc-host-bg-light, var(--background-color-medium, color-mix(in srgb, var(--bg-white) 95%, var(--text-primary))));
+    --bg-gray: var(--oc-host-bg-gray, var(--background-color-low, color-mix(in srgb, var(--bg-white) 90%, var(--text-primary))));
+    --hover-bg: var(--background-color-low, color-mix(in srgb, var(--bg-white) 92%, var(--text-primary)));
+    --switch-off-bg: var(--border-color-high, color-mix(in srgb, var(--bg-white) 75%, var(--text-primary)));
+
+    /* ── Borders & Lines ── */
+    --border-light: var(--oc-host-border-light, var(--border-color-low, #e2e8f0));
+    --border-color: var(--oc-host-border-color, var(--border-color-medium, #cbd5e1));
+
+    /* ── Text Colors ── */
+    --text-primary: var(--oc-host-text-primary, var(--text-color-high, #1e293b));
+    --text-secondary: var(--oc-host-text-secondary, var(--text-color-medium, #64748b));
+    --text-title: var(--oc-host-text-primary, var(--text-color-highest, #0f172a));
 
     /* ── Semantic Colours (Universal Host Adaptive Fallback Chain) ── */
-    --primary-color: var(--oc-host-primary, var(--v-accent, var(--accent-text, var(--primary-color-high, var(--proton-accent, var(--primary, var(--color-primary, var(--theme-primary, var(--main-color, var(--accent, #3b82f6))))))))));
-    --btn-primary-hover: var(--oc-host-primary-hover, color-mix(in srgb, var(--primary-color) 88%, #000000));
-    --text-on-primary: var(--oc-host-on-primary, var(--v-accent-ink, #ffffff));
-    --primary-text: var(--oc-host-primary-text, var(--accent-text, var(--primary-color)));
+    --primary-color: var(--oc-host-primary, var(--primary-color-high, #3b82f6));
+    --btn-primary-hover: var(--oc-host-primary-hover, var(--primary-color-medium, color-mix(in srgb, var(--primary-color) 88%, #000000)));
+    --text-on-primary: var(--oc-host-on-primary, var(--on-primary-color, #ffffff));
+    --primary-text: var(--oc-host-primary-text, var(--primary-color));
     --success-color: #059669;
     --success-dark: #047857;
     --info-color: #3b82f6;
@@ -68,7 +77,7 @@
     /* ── Dynamic Alpha Variants · Primary ── */
     --primary-a5: color-mix(in srgb, var(--primary-color) 5%, transparent);
     --primary-a8: color-mix(in srgb, var(--primary-color) 8%, transparent);
-    --primary-a10: var(--accent-soft, color-mix(in srgb, var(--primary-color) 10%, transparent));
+    --primary-a10: color-mix(in srgb, var(--primary-color) 10%, transparent);
     --primary-a12: color-mix(in srgb, var(--primary-color) 12%, transparent);
     --primary-a15: color-mix(in srgb, var(--primary-color) 15%, transparent);
     --primary-a20: color-mix(in srgb, var(--primary-color) 20%, transparent);
@@ -111,15 +120,9 @@
     --blue-800: #1e40af;
 
     /* ── Borders & Selection ── */
-    --border-color: #b1b1b1;
-    --border-light: #e2e8f0;
-    --hover-bg: #f3f4f6;
     --select-hover: #ebebeb;
 
     /* ── Buttons & Switches ── */
-    --text-on-primary: #ffffff;
-    --btn-primary-hover: #2563eb;
-    --switch-off-bg: #e5e7eb;
     --switch-knob-bg: #ffffff;
     --switch-knob-shadow: 0 1px 2px rgba(0,0,0,0.2);
 
@@ -250,27 +253,33 @@
 html[data-darkmode="true"][data-page^="admin-services-openclash"] .oc,
 html[data-darkmode="true"] .oc {
     /* ── Background & Text ── */
-    --bg-white: #1f2937;
-    --bg-light: #374151;
-    --bg-gray: #4b5563;
-    --text-primary: #ebebeb;
-    --text-secondary: #d0cfcf;
-    --text-title: #e5e7eb;
+    --oc-card-bg: var(--oc-host-card-bg, var(--bg-white));
+    --bg-white: var(--oc-host-bg-white, var(--background-color-high, #18181b));
+    --bg-light: var(--oc-host-bg-light, var(--background-color-medium, color-mix(in srgb, var(--bg-white) 93%, var(--text-primary))));
+    --bg-gray: var(--oc-host-bg-gray, var(--background-color-low, color-mix(in srgb, var(--bg-white) 88%, var(--text-primary))));
+    --hover-bg: var(--background-color-low, color-mix(in srgb, var(--bg-white) 90%, var(--text-primary)));
+    --switch-off-bg: var(--border-color-high, color-mix(in srgb, var(--bg-white) 78%, var(--text-primary)));
+
+    /* ── Borders & Lines ── */
+    --border-light: var(--oc-host-border-light, var(--border-color-medium, #262a2f));
+    --border-color: var(--oc-host-border-color, var(--border-color-high, #353a41));
+
+    /* ── Text Colors ── */
+    --text-primary: var(--oc-host-text-primary, var(--text-color-high, #e8eaed));
+    --text-secondary: var(--oc-host-text-secondary, var(--text-color-medium, #a9afb7));
+    --text-title: var(--oc-host-text-primary, var(--text-color-highest, #f8fafc));
 
     /* ── Borders & Selection ── */
-    --border-color: #939393;
-    --border-light: #6b7280;
-    --hover-bg: #374151;
     --select-hover: #ebebeb;
 
     /* ── Semantic Colours (Universal Host Adaptive Fallback Chain) ── */
-    --primary-color: var(--oc-host-primary, var(--v-accent, var(--accent, var(--primary-color-high, var(--proton-accent, var(--dark-primary, var(--primary, var(--color-primary, var(--theme-primary, var(--main-color, #3b82f6))))))))));
-    --btn-primary-hover: var(--oc-host-primary-hover, var(--accent-hover, var(--primary-color-medium, var(--primary-hover, color-mix(in srgb, var(--primary-color) 88%, #ffffff)))));
-    --text-on-primary: var(--oc-host-on-primary, var(--v-accent-ink, var(--accent-ink, #ffffff)));
-    --primary-text: var(--oc-host-primary-text, var(--accent-text, var(--primary-color)));
+    --primary-color: var(--oc-host-primary, var(--primary-color-high, #3b82f6));
+    --btn-primary-hover: var(--oc-host-primary-hover, var(--primary-color-medium, color-mix(in srgb, var(--primary-color) 88%, #ffffff)));
+    --text-on-primary: var(--oc-host-on-primary, var(--on-primary-color, #ffffff));
+    --primary-text: var(--oc-host-primary-text, var(--primary-color));
     --primary-a5: color-mix(in srgb, var(--primary-color) 5%, transparent);
     --primary-a8: color-mix(in srgb, var(--primary-color) 8%, transparent);
-    --primary-a10: var(--accent-soft, color-mix(in srgb, var(--primary-color) 10%, transparent));
+    --primary-a10: color-mix(in srgb, var(--primary-color) 10%, transparent);
     --primary-a12: color-mix(in srgb, var(--primary-color) 12%, transparent);
     --primary-a15: color-mix(in srgb, var(--primary-color) 15%, transparent);
     --primary-a20: color-mix(in srgb, var(--primary-color) 20%, transparent);
@@ -304,7 +313,6 @@ html[data-darkmode="true"] .oc {
     --stripe-opacity: 0.8;
 
     /* ── Buttons & Switches ── */
-    --switch-off-bg: #6b7280;
     --switch-knob-bg: #f9fafb;
     --switch-knob-shadow: 0 1px 2px rgba(0,0,0,0.2);
 
@@ -315,14 +323,6 @@ html[data-darkmode="true"] .oc {
     --overlay-bg: rgba(0, 0, 0, 0.5);
     --editor-bg: #1f2937;
 
-    /* ── Alpha Variants · Primary ── */
-    --primary-a5: rgba(96, 165, 250, 0.05);
-    --primary-a10: rgba(96, 165, 250, 0.1);
-    --primary-a20: rgba(96, 165, 250, 0.2);
-    --primary-a30: rgba(96, 165, 250, 0.3);
-    --primary-a40: rgba(96, 165, 250, 0.4);
-    --primary-a50: rgba(96, 165, 250, 0.5);
-    --primary-a60: rgba(96, 165, 250, 0.6);
 
     /* ── Bright / Soft Accents (dark rules only) ── */
     --primary-bright: #60a5fa;
