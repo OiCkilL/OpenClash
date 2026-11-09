@@ -2941,11 +2941,27 @@ function generateSparklineSVG(points, color, width, height) {
             return this.ocVar(vars[key], fallback[key]);
         },
 
-        hexToRgba: function(hex, a) {
-            var h = String(hex).replace('#', '');
+        hexToRgba: function(color, a) {
+            if (typeof ocParseRgba === 'function') {
+                var rgba = ocParseRgba(String(color || ''));
+                if (rgba) {
+                    var finalA = (rgba.a < 1) ? Math.min(rgba.a, a) : a;
+                    return 'rgba(' + rgba.r + ',' + rgba.g + ',' + rgba.b + ',' + finalA + ')';
+                }
+            }
+            var str = String(color || '').trim();
+            if (str.indexOf('rgb') === 0) {
+                var m = str.match(/[\d.]+/g);
+                if (m && m.length >= 3) {
+                    var origA = m.length >= 4 ? parseFloat(m[3]) : 1;
+                    var outA = (origA < 1) ? Math.min(origA, a) : a;
+                    return 'rgba(' + Math.round(parseFloat(m[0])) + ',' + Math.round(parseFloat(m[1])) + ',' + Math.round(parseFloat(m[2])) + ',' + outA + ')';
+                }
+            }
+            var h = str.replace('#', '');
             if (h.length === 3) h = h[0] + h[0] + h[1] + h[1] + h[2] + h[2];
             var r = parseInt(h.substring(0, 2), 16), g = parseInt(h.substring(2, 4), 16), b = parseInt(h.substring(4, 6), 16);
-            if (isNaN(r) || isNaN(g) || isNaN(b)) return hex;
+            if (isNaN(r) || isNaN(g) || isNaN(b)) return color;
             return 'rgba(' + r + ',' + g + ',' + b + ',' + a + ')';
         },
 
@@ -3283,7 +3299,8 @@ function generateSparklineSVG(points, color, width, height) {
                 panel: this.ocVar('--bg-white', '#ffffff'),
                 panelText: this.ocVar('--text-primary', '#374151')
             };
-            var axisRgba = this.hexToRgba(p.axis, 0.4);
+            var isDark = document.documentElement.getAttribute('data-darkmode') === 'true';
+            var axisRgba = this.hexToRgba(p.axis, isDark ? 0.85 : 0.55);
             var series = this.metrics[this.metric].series;
             var winMax = self.buf.t[self.buf.t.length - 1];
             var winMin = self.buf.t[0] + self.rightLeadMs * 3;
@@ -3489,11 +3506,45 @@ function generateSparklineSVG(points, color, width, height) {
             }
         },
 
+        applyTheme: function() {
+            this.renderLegend();
+            var c = this.chart;
+            if (!c) return;
+            var p = {
+                text: this.ocVar('--text-secondary', '#64748b'),
+                axis: this.ocVar('--border-light', '#e2e8f0')
+            };
+            var isDark = document.documentElement.getAttribute('data-darkmode') === 'true';
+            var axisRgba = this.hexToRgba(p.axis, isDark ? 0.85 : 0.55);
+            if (c.options && c.options.scales && c.options.scales.y) {
+                var yScale = c.options.scales.y;
+                if (yScale.border) yScale.border.color = p.axis;
+                if (yScale.ticks) yScale.ticks.color = p.text;
+                if (yScale.grid) {
+                    yScale.grid.color = function(ctx) {
+                        if (ctx.tick && ctx.tick.value === 0) return 'transparent';
+                        return axisRgba;
+                    };
+                }
+            }
+            var series = this.metrics && this.metrics[this.metric] ? this.metrics[this.metric].series : [];
+            if (c.data && c.data.datasets) {
+                for (var i = 0; i < series.length && i < c.data.datasets.length; i++) {
+                    var color = this.seriesColor(series[i].key);
+                    c.data.datasets[i].borderColor = color;
+                    c.data.datasets[i].backgroundColor = this.hexToRgba(color, 0.14);
+                    c.data.datasets[i].pointHoverBackgroundColor = color;
+                }
+            }
+            c.update('none');
+        },
+
         refresh: function() {
             this.renderLegend();
             if (this.view === 'chart') this.render();
         }
     };
+    window.StatsChart = StatsChart;
 
     function acFmtRate(b) {
         if (b >= 1048576) return (b / 1048576).toFixed(1) + ' MB/s';
