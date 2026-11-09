@@ -7,19 +7,26 @@
 /* --------------------------------------------------------------------------
  * 1. Design Tokens & Theme Variables
  * -------------------------------------------------------------------------- */
+[data-page^="admin-services-openclash"] .oc,
 .oc,
 .oc-ver-pills-top {
     /* Accent Color Fallback Chain */
-    --primary-color: var(--primary-color-high, var(--primary, var(--main-color, #3b82f6)));
-    --btn-primary-hover: var(--primary-hover, #2563eb);
-    --text-on-primary: #ffffff;
+    --primary-color: var(--oc-host-primary, var(--v-accent, var(--accent-text, var(--primary-color-high, var(--primary, var(--color-primary, var(--theme-primary, var(--main-color, var(--accent, #3b82f6)))))))));
+    --btn-primary-hover: var(--oc-host-primary-hover, color-mix(in srgb, var(--primary-color) 88%, #000000));
+    --text-on-primary: var(--oc-host-on-primary, var(--v-accent-ink, #ffffff));
+    --primary-text: var(--oc-host-primary-text, var(--accent-text, var(--primary-color)));
 
-    /* Primary Alpha Variations */
-    --primary-a5: rgba(59, 130, 246, 0.05);
-    --primary-a10: rgba(59, 130, 246, 0.1);
-    --primary-a15: rgba(59, 130, 246, 0.15);
-    --primary-a20: rgba(59, 130, 246, 0.2);
-    --primary-a30: rgba(59, 130, 246, 0.3);
+    /* Primary Dynamic Alpha Variations */
+    --primary-a5: color-mix(in srgb, var(--primary-color) 5%, transparent);
+    --primary-a8: color-mix(in srgb, var(--primary-color) 8%, transparent);
+    --primary-a10: var(--accent-soft, color-mix(in srgb, var(--primary-color) 10%, transparent));
+    --primary-a12: color-mix(in srgb, var(--primary-color) 12%, transparent);
+    --primary-a15: color-mix(in srgb, var(--primary-color) 15%, transparent);
+    --primary-a20: color-mix(in srgb, var(--primary-color) 20%, transparent);
+    --primary-a30: color-mix(in srgb, var(--primary-color) 30%, transparent);
+    --primary-a40: color-mix(in srgb, var(--primary-color) 40%, transparent);
+    --primary-a50: color-mix(in srgb, var(--primary-color) 50%, transparent);
+    --primary-a60: color-mix(in srgb, var(--primary-color) 60%, transparent);
 
     /* Surfaces & Backgrounds */
     --bg-white: var(--s1, #ffffff);
@@ -64,8 +71,24 @@
 }
 
 /* Dark Mode Tokens */
+html[data-darkmode="true"][data-page^="admin-services-openclash"] .oc,
 html[data-darkmode="true"] .oc,
 html[data-darkmode="true"] .oc-ver-pills-top {
+    --primary-color: var(--oc-host-primary, var(--v-accent, var(--accent, var(--primary-color-high, var(--dark-primary, var(--primary, var(--color-primary, var(--theme-primary, var(--main-color, #3b82f6)))))))));
+    --btn-primary-hover: var(--oc-host-primary-hover, var(--accent-hover, var(--primary-color-medium, var(--primary-hover, color-mix(in srgb, var(--primary-color) 88%, #ffffff)))));
+    --text-on-primary: var(--oc-host-on-primary, var(--v-accent-ink, var(--accent-ink, #ffffff)));
+    --primary-text: var(--oc-host-primary-text, var(--accent-text, var(--primary-color)));
+    --primary-a5: color-mix(in srgb, var(--primary-color) 5%, transparent);
+    --primary-a8: color-mix(in srgb, var(--primary-color) 8%, transparent);
+    --primary-a10: var(--accent-soft, color-mix(in srgb, var(--primary-color) 10%, transparent));
+    --primary-a12: color-mix(in srgb, var(--primary-color) 12%, transparent);
+    --primary-a15: color-mix(in srgb, var(--primary-color) 15%, transparent);
+    --primary-a20: color-mix(in srgb, var(--primary-color) 20%, transparent);
+    --primary-a30: color-mix(in srgb, var(--primary-color) 30%, transparent);
+    --primary-a40: color-mix(in srgb, var(--primary-color) 40%, transparent);
+    --primary-a50: color-mix(in srgb, var(--primary-color) 50%, transparent);
+    --primary-a60: color-mix(in srgb, var(--primary-color) 60%, transparent);
+
     --bg-white: var(--s1, #18181b);
     --bg-light: var(--s2, #22252a);
     --bg-gray: var(--s3, #27272a);
@@ -83,6 +106,11 @@ html[data-darkmode="true"] .oc-ver-pills-top {
     --warning-bg: rgba(251, 191, 36, 0.15);
     --error-bg: rgba(248, 113, 113, 0.15);
     --info-bg: rgba(96, 165, 250, 0.15);
+
+    --oc-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);
+    --oc-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+    --oc-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4);
+}
 
     --oc-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);
     --oc-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
@@ -333,53 +361,61 @@ html[data-darkmode="true"] .oc .hero-config-left .config-select {
 /* (5) Toggle Switch */
 .oc .oc-switch,
 .oc .plugin-toggle-switch {
-    position: relative;
-    display: inline-block;
-    width: 38px;
-    height: 20px;
-    flex-shrink: 0;
+    position: relative !important;
+    display: inline-block !important;
+    width: 36px !important;
+    height: 20px !important;
+    flex-shrink: 0 !important;
+    cursor: pointer !important;
+    margin: 0 !important;
 }
 
 .oc .oc-switch input,
 .oc .plugin-toggle-switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-    position: absolute;
+    opacity: 0 !important;
+    width: 0 !important;
+    height: 0 !important;
+    position: absolute !important;
+    pointer-events: none !important;
+    margin: 0 !important;
 }
 
 .oc .oc-switch-slider,
 .oc .plugin-toggle-slider {
-    position: absolute;
-    cursor: pointer;
-    inset: 0;
-    background-color: var(--switch-off-bg);
-    border-radius: var(--oc-radius-pill);
-    transition: background-color var(--oc-transition-norm);
+    position: absolute !important;
+    cursor: pointer !important;
+    inset: 0 !important;
+    background-color: var(--switch-off-bg) !important;
+    border: none !important;
+    border-radius: 999px !important;
+    transition: background-color 0.2s ease !important;
 }
 
 .oc .oc-switch-slider::before,
 .oc .plugin-toggle-slider::before {
-    position: absolute;
-    content: '';
-    height: 16px;
-    width: 16px;
-    left: 2px;
-    bottom: 2px;
-    background-color: #ffffff;
-    border-radius: 50%;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
-    transition: transform var(--oc-transition-norm);
+    position: absolute !important;
+    content: "" !important;
+    height: 16px !important;
+    width: 16px !important;
+    left: 2px !important;
+    top: 2px !important;
+    bottom: auto !important;
+    background-color: #ffffff !important;
+    border-radius: 50% !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25) !important;
+    transition: transform 0.2s ease, background-color 0.2s ease !important;
 }
 
 .oc .oc-switch input:checked + .oc-switch-slider,
 .oc .plugin-toggle-switch input:checked + .plugin-toggle-slider {
-    background-color: var(--primary-color);
+    background-color: var(--primary-color) !important;
+    border: none !important;
 }
 
 .oc .oc-switch input:checked + .oc-switch-slider::before,
 .oc .plugin-toggle-switch input:checked + .plugin-toggle-slider::before {
-    transform: translateX(18px);
+    transform: translateX(16px) !important;
+    background-color: var(--text-on-primary, #ffffff) !important;
 }
 
 /* (6) Status & Version Pill */

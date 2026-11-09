@@ -73,6 +73,168 @@ function luminanceFromColor(color) {
     return 0.2126 * r + 0.7152 * g + 0.0722 * b;
 }
 
+function ocParseRgb(color) {
+    if (!color || typeof color !== 'string') return null;
+    color = color.trim();
+    if (!color || color === 'transparent' || color === 'rgba(0, 0, 0, 0)') return null;
+    var r, g, b;
+    if (color.indexOf('rgb') === 0) {
+        var m = color.match(/[\d.]+/g);
+        if (!m || m.length < 3) return null;
+        r = parseFloat(m[0]);
+        g = parseFloat(m[1]);
+        b = parseFloat(m[2]);
+    } else if (color[0] === '#') {
+        if (color.length === 4) {
+            r = parseInt(color[1] + color[1], 16);
+            g = parseInt(color[2] + color[2], 16);
+            b = parseInt(color[3] + color[3], 16);
+        } else if (color.length >= 7) {
+            r = parseInt(color.substr(1, 2), 16);
+            g = parseInt(color.substr(3, 2), 16);
+            b = parseInt(color.substr(5, 2), 16);
+        } else {
+            return null;
+        }
+    } else {
+        return null;
+    }
+    if (isNaN(r) || isNaN(g) || isNaN(b)) return null;
+    return { r: Math.round(r), g: Math.round(g), b: Math.round(b) };
+}
+
+function ocWcagLuminance(r, g, b) {
+    var a = [r, g, b].map(function(v) {
+        v /= 255;
+        return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+    });
+    return a[0] * 0.2126 + a[1] * 0.7152 + a[2] * 0.0722;
+}
+
+function ocHasChroma(rgb) {
+    if (!rgb) return false;
+    var max = Math.max(rgb.r, rgb.g, rgb.b);
+    var min = Math.min(rgb.r, rgb.g, rgb.b);
+    return (max - min) >= 15;
+}
+
+function ocProbeHostAccent(forceDark) {
+    var docEl = document.documentElement;
+    var body = document.body;
+    var isDark = typeof forceDark === 'boolean' ? forceDark : (docEl.getAttribute('data-darkmode') === 'true');
+
+    // 探测前先清理内联属性，防止旧模式的探测结果遮蔽新模式下的原生 CSS 变量
+    docEl.style.removeProperty('--oc-host-primary');
+    docEl.style.removeProperty('--oc-host-primary-hover');
+    docEl.style.removeProperty('--oc-host-on-primary');
+    docEl.style.removeProperty('--oc-host-primary-text');
+
+    // 1. 区分浅色与深色的变量读取优先级
+    var varNames = isDark
+        ? ['--v-accent', '--accent', '--primary-color-high', '--dark-primary', '--primary', '--color-primary', '--theme-primary', '--main-color']
+        : ['--v-accent', '--accent-text', '--primary-color-high', '--primary', '--color-primary', '--theme-primary', '--main-color', '--accent'];
+
+    var foundColor = null;
+    var elStyle = window.getComputedStyle(docEl);
+    var bodyStyle = body ? window.getComputedStyle(body) : null;
+
+    for (var i = 0; i < varNames.length; i++) {
+        var val = elStyle.getPropertyValue(varNames[i]).trim();
+        if (!val && bodyStyle) val = bodyStyle.getPropertyValue(varNames[i]).trim();
+        if (val) {
+            var rgb = ocParseRgb(val);
+            if (rgb && ocHasChroma(rgb)) {
+                foundColor = val;
+                break;
+            }
+        }
+    }
+
+    // 2. 如果未找到变量且 DOM 准备就绪，尝试 DOM 采样
+    if (!foundColor && body) {
+        var probe = document.createElement('div');
+        probe.style.cssText = 'position:absolute;left:-9999px;top:-9999px;width:0;height:0;overflow:hidden;visibility:hidden;pointer-events:none;';
+        probe.innerHTML = '<button class="btn cbi-button cbi-button-apply primary"></button><li class="cbi-tab active"><a href="#"></a></li><header class="header"></header>';
+        body.appendChild(probe);
+
+        var probeTargets = [
+            probe.querySelector('.cbi-button-apply'),
+            probe.querySelector('.cbi-tab.active a'),
+            probe.querySelector('.cbi-tab.active'),
+            probe.querySelector('header')
+        ];
+
+        for (var j = 0; j < probeTargets.length; j++) {
+            var target = probeTargets[j];
+            if (!target) continue;
+            var tStyle = window.getComputedStyle(target);
+            var bg = tStyle.backgroundColor;
+            var rgbBg = ocParseRgb(bg);
+            if (rgbBg && ocHasChroma(rgbBg)) {
+                foundColor = bg;
+                break;
+            }
+            var bc = tStyle.borderColor;
+            var rgbBc = ocParseRgb(bc);
+            if (rgbBc && ocHasChroma(rgbBc)) {
+                foundColor = bc;
+                break;
+            }
+        }
+        body.removeChild(probe);
+    }
+
+    // 3. 计算相对亮度并设置宿主衍生变量
+    var hostVInk = elStyle.getPropertyValue('--v-accent-ink').trim() || (bodyStyle ? bodyStyle.getPropertyValue('--v-accent-ink').trim() : '');
+    var hostInk = elStyle.getPropertyValue('--accent-ink').trim() || (bodyStyle ? bodyStyle.getPropertyValue('--accent-ink').trim() : '');
+    var hostText = elStyle.getPropertyValue('--accent-text').trim() || (bodyStyle ? bodyStyle.getPropertyValue('--accent-text').trim() : '');
+    var hostHover = elStyle.getPropertyValue('--accent-hover').trim() || (bodyStyle ? bodyStyle.getPropertyValue('--accent-hover').trim() : '');
+
+    if (foundColor) {
+        var parsed = ocParseRgb(foundColor);
+        if (parsed) {
+            var lum = ocWcagLuminance(parsed.r, parsed.g, parsed.b);
+            // 浅色模式下若主色仍然过亮（lum > 0.42，如某主题只有亮黄色/柠檬绿），压暗以保白底可读
+            var finalColor = foundColor;
+            if (!isDark && lum > 0.42) {
+                if (hostText) {
+                    finalColor = hostText;
+                } else {
+                    finalColor = 'color-mix(in srgb, ' + foundColor + ' 65%, #000000)';
+                }
+                var pDark = ocParseRgb(finalColor);
+                if (pDark) lum = ocWcagLuminance(pDark.r, pDark.g, pDark.b);
+            }
+
+            docEl.style.setProperty('--oc-host-primary', finalColor);
+            if (hostHover) {
+                docEl.style.setProperty('--oc-host-primary-hover', hostHover);
+            }
+
+            if (hostVInk) {
+                docEl.style.setProperty('--oc-host-on-primary', hostVInk);
+            } else if (lum > 0.42) {
+                docEl.style.setProperty('--oc-host-on-primary', hostInk || '#141a00');
+            } else {
+                docEl.style.setProperty('--oc-host-on-primary', '#ffffff');
+            }
+
+            if (!isDark) {
+                docEl.style.setProperty('--oc-host-primary-text', hostText || finalColor);
+            } else {
+                docEl.style.setProperty('--oc-host-primary-text', finalColor);
+            }
+            return;
+        }
+    }
+
+    // 未探测到有彩度的宿主主题色时，清除动态变量，交由 CSS 回退链生效
+    docEl.style.removeProperty('--oc-host-primary');
+    docEl.style.removeProperty('--oc-host-primary-hover');
+    docEl.style.removeProperty('--oc-host-on-primary');
+    docEl.style.removeProperty('--oc-host-primary-text');
+}
+
 // Dark detection order: HTML data-* attributes, HTML class names, theme localStorage keys,
 // CSS background luminance, then the system preference
 function detectInitialAutoDark() {
@@ -116,6 +278,8 @@ function isDarkBackground(element) {
 }
 
 function ocApplyRootTheme() {
+    if (window.ocThemeUpdating) return;
+    window.ocThemeUpdating = true;
     try {
         localStorage.removeItem('oc-theme');
         localStorage.removeItem('oc-theme-name');
@@ -126,7 +290,10 @@ function ocApplyRootTheme() {
     if (document.body && !document.documentElement.getAttribute('data-darkmode') && !document.documentElement.getAttribute('data-theme')) {
         d = isDarkBackground(document.body);
     }
-    document.documentElement.setAttribute('data-darkmode', d ? 'true' : 'false');
+    var newDm = d ? 'true' : 'false';
+    if (document.documentElement.getAttribute('data-darkmode') !== newDm) {
+        document.documentElement.setAttribute('data-darkmode', newDm);
+    }
     var m = document.querySelector('meta[name="color-scheme"]');
     if (!m) {
         m = document.createElement('meta');
@@ -134,6 +301,8 @@ function ocApplyRootTheme() {
         document.head.appendChild(m);
     }
     m.content = d ? 'dark' : 'light';
+    ocProbeHostAccent(d);
+    window.ocThemeUpdating = false;
 }
 
 function ocApplyCustomAccent() {
@@ -179,6 +348,26 @@ if (window.matchMedia && !window.ocThemeMediaBound) {
     window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function() {
         ocApplyRootTheme();
         if (document.body) ocUpdateTheme();
+    });
+}
+
+// React to host theme/dark-mode attribute mutations dynamically
+if (window.MutationObserver && !window.ocThemeObserverBound) {
+    window.ocThemeObserverBound = true;
+    var ocThemeObserver = new MutationObserver(function(mutations) {
+        if (window.ocThemeUpdating) return;
+        for (var i = 0; i < mutations.length; i++) {
+            var attr = mutations[i].attributeName;
+            if (attr === 'data-darkmode' || attr === 'data-theme' || attr === 'data-bs-theme' || attr === 'class') {
+                ocApplyRootTheme();
+                if (document.body) ocUpdateTheme();
+                break;
+            }
+        }
+    });
+    ocThemeObserver.observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ['data-darkmode', 'data-theme', 'data-bs-theme', 'class']
     });
 }
 

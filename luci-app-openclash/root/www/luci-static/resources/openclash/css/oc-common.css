@@ -40,6 +40,7 @@
     src: url('/luci-static/resources/openclash/fonts/TwemojiMozilla-flags.woff2') format('woff2');
 }
 
+[data-page^="admin-services-openclash"] .oc,
 .oc {
     /* ── Background & Text ── */
     --bg-white: #ffffff;
@@ -49,8 +50,11 @@
     --text-secondary: #64748b;
     --text-title: #4d4d4d;
 
-    /* ── Semantic Colours ── */
-    --primary-color: #3b82f6;
+    /* ── Semantic Colours (Universal Host Adaptive Fallback Chain) ── */
+    --primary-color: var(--oc-host-primary, var(--v-accent, var(--accent-text, var(--primary-color-high, var(--primary, var(--color-primary, var(--theme-primary, var(--main-color, var(--accent, #3b82f6)))))))));
+    --btn-primary-hover: var(--oc-host-primary-hover, color-mix(in srgb, var(--primary-color) 88%, #000000));
+    --text-on-primary: var(--oc-host-on-primary, var(--v-accent-ink, #ffffff));
+    --primary-text: var(--oc-host-primary-text, var(--accent-text, var(--primary-color)));
     --success-color: #059669;
     --success-dark: #047857;
     --info-color: #3b82f6;
@@ -61,14 +65,17 @@
     --watchdog-color: #b300ff;
     --fatal-color: #991b1b;
 
-    /* ── Alpha Variants · Primary ── */
-    --primary-a5: rgba(59, 130, 246, 0.05);
-    --primary-a10: rgba(59, 130, 246, 0.1);
-    --primary-a20: rgba(59, 130, 246, 0.2);
-    --primary-a30: rgba(59, 130, 246, 0.3);
-    --primary-a40: rgba(59, 130, 246, 0.4);
-    --primary-a50: rgba(59, 130, 246, 0.5);
-    --primary-a60: rgba(59, 130, 246, 0.6);
+    /* ── Dynamic Alpha Variants · Primary ── */
+    --primary-a5: color-mix(in srgb, var(--primary-color) 5%, transparent);
+    --primary-a8: color-mix(in srgb, var(--primary-color) 8%, transparent);
+    --primary-a10: var(--accent-soft, color-mix(in srgb, var(--primary-color) 10%, transparent));
+    --primary-a12: color-mix(in srgb, var(--primary-color) 12%, transparent);
+    --primary-a15: color-mix(in srgb, var(--primary-color) 15%, transparent);
+    --primary-a20: color-mix(in srgb, var(--primary-color) 20%, transparent);
+    --primary-a30: color-mix(in srgb, var(--primary-color) 30%, transparent);
+    --primary-a40: color-mix(in srgb, var(--primary-color) 40%, transparent);
+    --primary-a50: color-mix(in srgb, var(--primary-color) 50%, transparent);
+    --primary-a60: color-mix(in srgb, var(--primary-color) 60%, transparent);
 
     /* ── Alpha Variants · Success ── */
     --success-a5: rgba(5, 150, 105, 0.05);
@@ -240,6 +247,7 @@
     font-family: "Microsoft Yahei", "sans-serif", "Helvetica Neue", "Helvetica", "Hiragino Sans GB", 'Twemoji Mozilla';
 }
 
+html[data-darkmode="true"][data-page^="admin-services-openclash"] .oc,
 html[data-darkmode="true"] .oc {
     /* ── Background & Text ── */
     --bg-white: #1f2937;
@@ -255,8 +263,21 @@ html[data-darkmode="true"] .oc {
     --hover-bg: #374151;
     --select-hover: #ebebeb;
 
-    /* ── Semantic Colours ── */
-    --primary-color: #3b82f6;
+    /* ── Semantic Colours (Universal Host Adaptive Fallback Chain) ── */
+    --primary-color: var(--oc-host-primary, var(--v-accent, var(--accent, var(--primary-color-high, var(--dark-primary, var(--primary, var(--color-primary, var(--theme-primary, var(--main-color, #3b82f6)))))))));
+    --btn-primary-hover: var(--oc-host-primary-hover, var(--accent-hover, var(--primary-color-medium, var(--primary-hover, color-mix(in srgb, var(--primary-color) 88%, #ffffff)))));
+    --text-on-primary: var(--oc-host-on-primary, var(--v-accent-ink, var(--accent-ink, #ffffff)));
+    --primary-text: var(--oc-host-primary-text, var(--accent-text, var(--primary-color)));
+    --primary-a5: color-mix(in srgb, var(--primary-color) 5%, transparent);
+    --primary-a8: color-mix(in srgb, var(--primary-color) 8%, transparent);
+    --primary-a10: var(--accent-soft, color-mix(in srgb, var(--primary-color) 10%, transparent));
+    --primary-a12: color-mix(in srgb, var(--primary-color) 12%, transparent);
+    --primary-a15: color-mix(in srgb, var(--primary-color) 15%, transparent);
+    --primary-a20: color-mix(in srgb, var(--primary-color) 20%, transparent);
+    --primary-a30: color-mix(in srgb, var(--primary-color) 30%, transparent);
+    --primary-a40: color-mix(in srgb, var(--primary-color) 40%, transparent);
+    --primary-a50: color-mix(in srgb, var(--primary-color) 50%, transparent);
+    --primary-a60: color-mix(in srgb, var(--primary-color) 60%, transparent);
     --success-color: #34d399;
     --success-dark: #10b981;
     --info-color: #3b82f6;
@@ -283,8 +304,6 @@ html[data-darkmode="true"] .oc {
     --stripe-opacity: 0.8;
 
     /* ── Buttons & Switches ── */
-    --text-on-primary: #ffffff;
-    --btn-primary-hover: #2563eb;
     --switch-off-bg: #6b7280;
     --switch-knob-bg: #f9fafb;
     --switch-knob-shadow: 0 1px 2px rgba(0,0,0,0.2);
@@ -575,6 +594,7 @@ html[data-darkmode="true"] .oc svg {
     box-sizing: border-box;
 }
 
+[data-page^="admin-services-openclash"] .oc,
 .oc {
     line-height: 1.6;
     width: 100%;
@@ -1487,7 +1507,8 @@ ul {
             margin: 0 auto;
         }
     /* myip.htm */
-    .oc { --card-item-min-height: 80px; --card-title-size: 14px; --card-title-size-sm: 12px; }
+    [data-page^="admin-services-openclash"] .oc,
+.oc { --card-item-min-height: 80px; --card-title-size: 14px; --card-title-size-sm: 12px; }
     .oc .select-popup-footer { grid-template-columns: repeat(2, 1fr); gap: 6px; padding: 10px; }
     .oc .select-popup-footer .select-class {
             height: 32px;
@@ -1511,7 +1532,8 @@ ul {
     .oc .mode-tab { padding: 10px 12px; font-size: 13px; }
     .oc .mode-tab svg { width: 12px; height: 12px; }
     /* myip.htm */
-    .oc { --card-outer-padding: 8px; --section-gap: 10px; --card-grid-gap: 6px; --card-item-min-height: 70px; --card-title-size: 13px; --icon-btn-size: 24px; --control-row-height: 28px; }
+    [data-page^="admin-services-openclash"] .oc,
+.oc { --card-outer-padding: 8px; --section-gap: 10px; --card-grid-gap: 6px; --card-item-min-height: 70px; --card-title-size: 13px; --icon-btn-size: 24px; --control-row-height: 28px; }
     .oc .select-popup-footer { grid-template-columns: repeat(2, 1fr); gap: 4px; padding: 8px; }
     .oc .select-popup-footer .select-class {
             height: 30px;
