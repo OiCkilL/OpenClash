@@ -131,8 +131,8 @@ function ocProbeHostAccent(forceDark) {
 
     // 1. 区分浅色与深色的变量读取优先级
     var varNames = isDark
-        ? ['--v-accent', '--accent', '--primary-color-high', '--dark-primary', '--primary', '--color-primary', '--theme-primary', '--main-color']
-        : ['--v-accent', '--accent-text', '--primary-color-high', '--primary', '--color-primary', '--theme-primary', '--main-color', '--accent'];
+        ? ['--v-accent', '--accent', '--primary-color-high', '--proton-accent', '--dark-primary', '--primary', '--color-primary', '--theme-primary', '--main-color']
+        : ['--v-accent', '--accent-text', '--primary-color-high', '--proton-accent', '--primary', '--color-primary', '--theme-primary', '--main-color', '--accent'];
 
     var foundColor = null;
     var elStyle = window.getComputedStyle(docEl);
