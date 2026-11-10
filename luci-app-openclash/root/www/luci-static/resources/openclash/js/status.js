@@ -258,6 +258,10 @@ function generateSparklineSVG(points, color, width, height) {
     var debounceButton = ocDebounce;
 
     function ocFormatClashPill(state, text) {
+        var cap = document.getElementById('oc_status_capsule');
+        if (cap) {
+            cap.className = 'oc-status-capsule is-' + state;
+        }
         return '<span class="oc-status-pill is-' + state + '"><span class="oc-status-dot"></span><span class="oc-status-text">' + text + '</span></span>';
     }
 
@@ -2278,10 +2282,9 @@ function generateSparklineSVG(points, color, width, height) {
             var keepOffset = el.scrollTop;
             el.innerHTML = '';
             for (var j = 0; j < merged.length; j++) {
-                var color = ocGetLogColor(merged[j]);
                 var div = document.createElement('div');
                 div.style.whiteSpace = 'nowrap';
-                div.innerHTML = '<b style="color:' + color + '">' + merged[j] + '</b>';
+                div.innerHTML = '<b>' + merged[j] + '</b>';
                 el.appendChild(div);
             }
             while (el.children.length < maxLines) {
@@ -2310,7 +2313,10 @@ function generateSparklineSVG(points, color, width, height) {
     };
 
     if (DOMCache.oclog) {
-        DOMCache.oclog.addEventListener('click', function() { ocOpenCoreStartFlow(); });
+        DOMCache.oclog.addEventListener('click', function(e) {
+            e.stopPropagation();
+            ocOpenCoreStartFlow();
+        });
     }
 
     [DOMCache.plugin_version_display, DOMCache.core_version_display].forEach(function(tag) {

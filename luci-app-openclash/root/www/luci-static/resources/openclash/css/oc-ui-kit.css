@@ -120,7 +120,7 @@ html[data-darkmode="true"] .oc-ver-pills-top {
 /* --------------------------------------------------------------------------
  * 2. Universal Control Box-Model Isolation
  * -------------------------------------------------------------------------- */
-.oc input[type="radio"]:not(.cbi-button-group input):not(.stats-tabs input):not(#stats-tabs input),
+.oc input[type="radio"]:not(.cbi-button-group input):not(.stats-tabs input):not(.mode-pill input),
 .oc input[type="checkbox"]:not(.oc-switch input):not(.oc-ui-switch input):not(.plugin-toggle-switch input),
 .oc .mode-radio-label input[type="radio"] {
     min-height: 0 !important;
@@ -136,9 +136,11 @@ html[data-darkmode="true"] .oc-ver-pills-top {
     aspect-ratio: 1 / 1 !important;
 }
 
-.oc .cbi-button-group input[type="radio"],
-.oc #stats-tabs input[type="radio"],
-.oc .stats-tabs input[type="radio"] {
+.oc .cbi-button-group input[type="radio"]:not(#_),
+.oc #stats-tabs input[type="radio"]:not(#_),
+.oc .stats-tabs input[type="radio"]:not(#_),
+.oc #mode-pill input[type="radio"]:not(#_),
+.oc .mode-pill input[type="radio"]:not(#_) {
     position: absolute !important;
     width: 0 !important;
     height: 0 !important;
@@ -148,6 +150,7 @@ html[data-darkmode="true"] .oc-ver-pills-top {
     pointer-events: none !important;
     margin: 0 !important;
     padding: 0 !important;
+    border: 0 !important;
 }
 
 .oc button,
@@ -296,8 +299,8 @@ html[data-darkmode="true"] .oc-ver-pills-top {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 30px;
-    height: 30px;
+    width: 28px;
+    height: 28px;
     padding: 0;
     border-radius: var(--oc-radius-sm);
     border: 1px solid var(--border-light);

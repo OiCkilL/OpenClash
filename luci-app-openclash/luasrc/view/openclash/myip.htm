@@ -49,40 +49,38 @@
                             <div class="myip-check-section">
                                 <p class="myip-section-title">
                                     <span id="myip-check-title"><%:Access Check%></span>
-                                    <span class="icon-pill myip-toolbar">
-                                        <button type="button" class="icon-pill-opt" onclick="return privacy_my_ip(this)">
-                                            <svg id="eye-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" overflow="visible" xmlns="http://www.w3.org/2000/svg">
+                                    <span class="myip-toolbar">
+                                        <button type="button" class="icon-pill-opt oc-icon-btn" onclick="return privacy_my_ip(this)">
+                                            <svg id="eye-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <title><%:Show IP%></title>
-                                                <use id="eye-open" href="#oc-icon-eye" x="-2.5" y="-2.5" width="29" height="29"></use>
-                                                <use id="eye-closed" class="oc-hidden" href="#oc-icon-eye-off" x="-2.5" y="-2.5" width="29" height="29"></use>
+                                                <use id="eye-open" href="#oc-icon-eye"></use>
+                                                <use id="eye-closed" class="oc-hidden" href="#oc-icon-eye-off"></use>
                                             </svg>
                                         </button>
-                                        <button type="button" class="icon-pill-opt" onclick="return toggle_mode_by_icon(this)">
-                                            <svg id="mode-icon" width="14" height="14" viewBox="0.4 1.4 47.2 47.2" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <button type="button" class="icon-pill-opt oc-icon-btn" onclick="return toggle_mode_by_icon(this)">
+                                            <svg id="mode-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <title><%:Router Mode%></title>
-                                                <rect class="mode-body" x="4" y="28" width="40" height="14" rx="2" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-                                                <path class="mode-line" d="M14 35L22 35" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-                                                <rect class="mode-dot" x="30" y="33" width="3" height="3" rx="1.5"/>
-                                                <path class="mode-antenna" d="M12 28L12 8" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-                                                <path class="mode-antenna" d="M36 28V8" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                                                <use class="mode-router-icon" href="#oc-icon-device-router"></use>
+                                                <use class="mode-browser-icon" href="#oc-icon-device-desktop"></use>
                                             </svg>
                                         </button>
-                                        <button type="button" class="icon-pill-opt" onclick="return toggle_unlock_by_icon(this)">
-                                            <svg id="unlock-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" overflow="visible" xmlns="http://www.w3.org/2000/svg">
+                                        <button type="button" class="icon-pill-opt oc-icon-btn" onclick="return toggle_unlock_by_icon(this)">
+                                            <svg id="unlock-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <title><%:Access Check%></title>
-                                                <use href="#oc-icon-world-check" x="-1.25" y="-1.25" width="26.5" height="26.5"/>
+                                                <use class="unlock-access-icon" href="#oc-icon-globe"></use>
+                                                <use class="unlock-check-icon" href="#oc-icon-world-check"></use>
                                             </svg>
                                         </button>
-                                        <button type="button" class="icon-pill-opt" onclick="return toggle_unlock_gear_by_icon(this)">
-                                            <svg id="unlock-gear-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" overflow="visible" xmlns="http://www.w3.org/2000/svg">
+                                        <button type="button" class="icon-pill-opt oc-icon-btn" onclick="return toggle_unlock_gear_by_icon(this)">
+                                            <svg id="unlock-gear-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <title><%:Unlock Services%></title>
-                                                <use href="#oc-icon-gear" x="1.25" y="1.25" width="21.5" height="21.5"/>
+                                                <use href="#oc-icon-gear"></use>
                                             </svg>
                                         </button>
-                                        <button type="button" class="icon-pill-opt" onclick="return refresh_myip(this)">
+                                        <button type="button" class="icon-pill-opt oc-icon-btn" onclick="return refresh_myip(this)">
                                             <svg id="data-refresh-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <title><%:Refresh%></title>
-                                                <use href="#oc-icon-refresh" x="-0.8" y="-0.8" width="25.6" height="25.6"/>
+                                                <use href="#oc-icon-refresh"></use>
                                             </svg>
                                         </button>
                                     </span>

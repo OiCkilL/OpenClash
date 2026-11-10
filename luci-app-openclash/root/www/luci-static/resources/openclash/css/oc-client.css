@@ -2000,13 +2000,6 @@ html[data-darkmode="true"] .oc .myip-footer p {
     box-sizing: border-box;
 }
 
-.oc .myip-ip-section:hover,
-.oc .myip-check-section:hover {
-    background: var(--hover-bg, #f3f4f6);
-    border-color: var(--primary-color, #3b82f6);
-    box-shadow: var(--shadow-sm);
-}
-
 .oc .myip-section-title {
     font-size: var(--card-title-size);
     font-weight: 500;
@@ -2049,10 +2042,6 @@ html[data-darkmode="true"] .oc .myip-footer p {
     height: 100%;
     box-sizing: border-box;
     gap: var(--card-grid-gap);
-}
-
-.oc .myip-card-item:hover {
-    border-color: var(--primary-color, #3b82f6);
 }
 
 .oc .myip-card-icon {
@@ -2676,22 +2665,27 @@ html[data-darkmode="true"] .oc .myip-gear-state {
 
 .oc .myip-footer {
     position: relative;
-    height: 24px;
-    padding-top: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    height: auto !important;
+    min-height: 0 !important;
+    padding: 4px 4px 0 4px !important;
+    margin: 0 !important;
     grid-column: 1 / -1;
+    overflow: visible !important;
 }
 
 .oc .myip-footer p {
-    position: absolute;
-    right: 0% !important;
-    top: 0 !important;
+    position: static !important;
     margin: 0 !important;
-    font-size: 15px !important;
-    line-height: 20px !important;
-    padding: 0 var(--card-outer-padding) !important;
+    font-size: 12px !important;
+    font-weight: 500 !important;
+    line-height: 18px !important;
+    padding: 0 !important;
     white-space: nowrap;
     z-index: 1;
-    color: var(--text-secondary, #6b7280) !important;
+    color: var(--text-secondary, #64748b) !important;
     overflow: hidden;
     text-overflow: ellipsis;
     max-width: 100%;
@@ -2699,17 +2693,22 @@ html[data-darkmode="true"] .oc .myip-gear-state {
     text-align: right;
 }
 
+html[data-darkmode="true"] .oc .myip-footer p {
+    color: var(--text-secondary, #a1a1aa) !important;
+}
+
 .oc .myip-footer a {
-    text-decoration: none;
-    color: var(--primary-color, #3b82f6);
-    opacity: 0.8;
-    transition: opacity var(--transition-fast);
-    font-weight: 500;
+    text-decoration: none !important;
+    color: var(--primary-color, #2563eb) !important;
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    opacity: 1 !important;
+    transition: color var(--transition-fast, 0.15s ease), opacity var(--transition-fast, 0.15s ease);
 }
 
 .oc .myip-footer a:hover {
-    opacity: 1;
-    text-decoration: underline;
+    opacity: 0.85 !important;
+    text-decoration: none !important;
 }
 
 .oc .mode-label {
@@ -2718,21 +2717,22 @@ html[data-darkmode="true"] .oc .myip-gear-state {
     vertical-align: middle;
 }
 
-.oc .myip-toolbar #mode-icon .mode-body { fill: var(--primary-color); stroke: var(--primary-color); }
+.oc .myip-toolbar #mode-icon .mode-browser-icon,
+.oc .myip-toolbar #mode-icon.mode-browser .mode-router-icon,
+.oc .myip-toolbar #unlock-icon .unlock-check-icon,
+.oc .myip-toolbar #unlock-icon.oc-unlock-on .unlock-access-icon {
+    display: none !important;
+}
 
-.oc .myip-toolbar #mode-icon .mode-line,
-.oc .myip-toolbar #mode-icon .mode-dot { fill: var(--text-on-primary); stroke: var(--text-on-primary); }
+.oc .myip-toolbar #mode-icon.mode-browser .mode-browser-icon,
+.oc .myip-toolbar #unlock-icon.oc-unlock-on .unlock-check-icon {
+    display: inline !important;
+}
 
-.oc .myip-toolbar #mode-icon .mode-antenna { stroke: currentColor; }
-
-.oc .myip-toolbar #mode-icon.mode-browser .mode-body { fill: none; stroke: currentColor; }
-
-.oc .myip-toolbar #mode-icon.mode-browser .mode-line,
-.oc .myip-toolbar #mode-icon.mode-browser .mode-dot { fill: currentColor; stroke: currentColor; }
-
-.oc .myip-toolbar #unlock-icon.oc-unlock-on { color: var(--primary-color); }
-
-.oc .myip-toolbar #unlock-gear-icon.oc-gear-on { color: var(--primary-color); }
+.oc .myip-toolbar #unlock-gear-icon.oc-gear-on {
+    color: var(--primary-color) !important;
+    stroke: var(--primary-color) !important;
+}
 
 .oc .developer-container {
     background: var(--bg-white);
@@ -3600,7 +3600,7 @@ html[data-darkmode="true"] .oc .oix-announcement {
     .oc .myip-main-card.oc-unlock-view { --myip-unlock-name-fs: 12px; }
     .oc .myip-unlock-ribbon { width: 24px; height: 24px; }
     .oc .myip-unlock-ribbon svg { top: 3px; right: 3px; width: 9px; height: 9px; }
-    .oc .myip-footer p { font-size: 13px !important; line-height: 18px !important; }
+    .oc .myip-footer p { font-size: 12px !important; line-height: 18px !important; }
     /* oixcloud.htm */
     .oc .oix-main-container { width: 100%; }
     .oc .card { --oix-cover-width: 125px; }
@@ -3683,7 +3683,7 @@ html[data-darkmode="true"] .oc .oix-announcement {
     .oc .myip-main-card.oc-unlock-view { --myip-unlock-name-fs: 11.5px; }
     .oc .myip-unlock-ribbon { width: 22px; height: 22px; }
     .oc .myip-unlock-ribbon svg { top: 2.5px; right: 2.5px; width: 8px; height: 8px; }
-    .oc .myip-footer p { font-size: 11px !important; line-height: 16px !important; }
+    .oc .myip-footer p { font-size: 12px !important; line-height: 16px !important; }
     /* oixcloud.htm */
     .oc .center { padding: 8px; }
     .oc .card { --oix-cover-width: 115px; }
@@ -3775,7 +3775,7 @@ html[data-darkmode="true"] .oc .oix-announcement {
     font-size: 10px; font-weight: 600; line-height: normal; color: var(--text-secondary);
     background: var(--bg-light); border: 1px solid var(--border-light);
 }
-.oc .ac-tools { margin-left: auto; display: flex; align-items: center; gap: 6px; flex: 0 0 auto; }
+.oc .ac-tools { margin-left: auto; display: flex; align-items: center; gap: 4px; flex: 0 0 auto; }
 .oc .ac-search {
     display: flex; align-items: center; gap: 6px;
     height: 28px; padding: 0 8px; box-sizing: border-box;
@@ -3802,17 +3802,19 @@ html[data-darkmode="true"] .oc .oix-announcement {
 }
 .oc .ac-search-clear:hover { background: var(--hover-bg); color: var(--text-primary); }
 .oc .ac-key-btn {
-    display: inline-flex; align-items: center; gap: 4px;
-    height: 24px; padding: 0 8px;
-    font-size: 11px; font-weight: 600; font-family: inherit;
-    color: var(--text-primary);
-    background: var(--bg-light);
-    border: 1px solid var(--border-light);
-    border-radius: var(--radius-sm);
+    display: inline-flex; align-items: center; justify-content: center; gap: 4px;
+    width: 28px; height: 28px; padding: 0;
+    font-size: 12px; font-weight: 600; font-family: inherit;
+    color: var(--text-secondary, #64748b);
+    background: var(--bg-white, #ffffff);
+    border: 1px solid var(--border-light, #e2e8f0);
+    border-radius: var(--radius-sm, 6px);
     cursor: pointer; user-select: none; white-space: nowrap;
-    transition: color var(--transition-fast), background var(--transition-fast), border-color var(--transition-fast);
+    transition: all var(--transition-fast, 0.15s ease);
 }
-.oc .ac-key-btn svg { width: 12px; height: 12px; flex: 0 0 auto; }
+.oc .ac-key-btn.ac-sort-btn { width: auto; padding: 0 10px; color: var(--text-primary, #1e293b); }
+.oc .ac-key-btn svg { width: 14px; height: 14px; flex: 0 0 auto; }
+.oc .ac-tools .help-link { display: none !important; }
 .oc .ac-sort-ind:empty { display: none; }
 .oc .ac-key-btn:hover:not(:disabled):not(.ac-working) { border-color: var(--primary-color); color: var(--primary-color); background: var(--primary-a10); }
 .oc .ac-key-btn:disabled { opacity: .45; cursor: default; }
@@ -3837,7 +3839,7 @@ html[data-darkmode="true"] .oc .oix-announcement {
 .oc .ac-dir-opt.active { color: var(--primary-color); background: var(--bg-white); box-shadow: var(--shadow-md); }
 .oc .ac-dir-opt:disabled { opacity: .45; cursor: default; }
 .oc .ac-dir-opt.active:disabled { opacity: 1; }
-.oc .ac-sep-v { width: 1px; height: 14px; background: var(--border-light); flex: 0 0 auto; }
+.oc .ac-sep-v { width: 1px; height: 14px; margin: 0 2px; background: var(--border-light); flex: 0 0 auto; }
 
 /* In-place spinner: hides the label instead of swapping the node, so the button box never shifts. */
 .oc .ac-working { position: relative; color: transparent !important; pointer-events: none; }
@@ -4147,7 +4149,7 @@ html body .oc button.ac-th-cell:not(:disabled):hover {
 /* the two rates stay one block, so a wrap keeps them together on the right */
 .oc .ac-card.ac-w-xs .ac-rates { display: flex; align-items: center; gap: 10px; margin-left: auto; flex: 0 0 auto; }
 .oc .ac-card.ac-w-xs .ac-key-btn .ac-key-text { display: none; }
-.oc .ac-card.ac-w-xs .ac-key-btn { padding: 0 4px; }
+.oc .ac-card.ac-w-xs .ac-key-btn { width: 28px; padding: 0; }
 .oc .ac-card.ac-w-xs .ac-dir-opt .ac-key-text { display: none; }
 .oc .ac-card.ac-w-xs .ac-dir-opt { padding: 0 6px; }
 .oc .ac-card.ac-w-xs .ac-tools { gap: 4px; }
@@ -4497,9 +4499,9 @@ html[data-darkmode="true"] .oc .oc-notice #megaphone {
     width: auto !important;
     min-width: 0 !important;
     max-width: 320px !important;
-    height: 28px !important;
-    line-height: 28px !important;
-    padding: 0 10px !important;
+    height: 24px !important;
+    line-height: 24px !important;
+    padding: 0 0 0 8px !important;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -4710,9 +4712,10 @@ html[data-darkmode="true"] .oc .oc-notice #megaphone {
 }
 
 .oc .oc-icon-btn {
-    width: 28px;
-    height: 28px;
-    padding: 0;
+    width: 28px !important;
+    height: 28px !important;
+    min-width: 28px !important;
+    padding: 0 !important;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -5490,6 +5493,7 @@ html[data-darkmode="true"] .oc .dropdown-header-info {
 html[data-darkmode="true"] .oc .hero-logo-btn,
 html[data-darkmode="true"] .oc .oc-hero-btn,
 html[data-darkmode="true"] .oc .oc-icon-btn,
+html[data-darkmode="true"] .oc .ac-key-btn,
 html[data-darkmode="true"] .oc #edit_overwrite,
 html[data-darkmode="true"] .oc .hero-config-left .config-select,
 html[data-darkmode="true"] .oc .oc-native-select,
@@ -5569,17 +5573,75 @@ html[data-darkmode="true"] .oc .dev-logo-btn:hover {
     background: var(--bg-gray, #18181b);
 }
 
-/* 2. Clash Status Pill & Log Display */
+/* 2. Clash Status Pill & Log Display (Merged Status Capsule) */
+.oc .oc-status-capsule {
+    display: inline-flex !important;
+    align-items: center !important;
+    height: 26px !important;
+    padding: 0 10px !important;
+    border-radius: 999px !important;
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    line-height: 1 !important;
+    white-space: nowrap !important;
+    box-sizing: border-box !important;
+    cursor: pointer !important;
+    user-select: none !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    overflow: hidden !important;
+    transition: filter var(--transition-fast, 0.15s ease), background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease !important;
+}
+
+.oc .oc-status-capsule.is-running,
+.oc .oc-status-capsule:has(.is-running) {
+    background: rgba(16, 185, 129, 0.1) !important;
+    color: #059669 !important;
+    border: 1px solid rgba(16, 185, 129, 0.28) !important;
+}
+
+html[data-darkmode="true"] .oc .oc-status-capsule.is-running,
+html[data-darkmode="true"] .oc .oc-status-capsule:has(.is-running) {
+    background: rgba(16, 185, 129, 0.14) !important;
+    color: #34d399 !important;
+    border: 1px solid rgba(16, 185, 129, 0.32) !important;
+}
+
+.oc .oc-status-capsule.is-stopped,
+.oc .oc-status-capsule.is-loading,
+.oc .oc-status-capsule:has(.is-stopped),
+.oc .oc-status-capsule:has(.is-loading) {
+    background: var(--bg-light, #f1f5f9) !important;
+    color: var(--text-secondary, #64748b) !important;
+    border: 1px solid var(--border-color, #cbd5e1) !important;
+}
+
+.oc .oc-status-capsule.is-error,
+.oc .oc-status-capsule:has(.is-error) {
+    background: rgba(239, 68, 68, 0.1) !important;
+    color: #dc2626 !important;
+    border: 1px solid rgba(239, 68, 68, 0.28) !important;
+}
+
+html[data-darkmode="true"] .oc .oc-status-capsule.is-error,
+html[data-darkmode="true"] .oc .oc-status-capsule:has(.is-error) {
+    background: rgba(239, 68, 68, 0.14) !important;
+    color: #f87171 !important;
+    border: 1px solid rgba(239, 68, 68, 0.32) !important;
+}
+
 .oc #_clash.value-indicator {
     border: none !important;
     background: transparent !important;
     padding: 0 !important;
     min-width: 0 !important;
     width: auto !important;
-    height: auto !important;
+    height: 100% !important;
     box-shadow: none !important;
     overflow: visible !important;
-    border-radius: 999px !important;
+    border-radius: 0 !important;
+    color: inherit !important;
+    flex-shrink: 0 !important;
 }
 
 .oc .oc-status-pill {
@@ -5594,6 +5656,15 @@ html[data-darkmode="true"] .oc .dev-logo-btn:hover {
     line-height: 1;
     white-space: nowrap;
     box-sizing: border-box;
+}
+
+.oc .oc-status-capsule .oc-status-pill {
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+    height: 100% !important;
+    border-radius: 0 !important;
+    color: inherit !important;
 }
 
 .oc .oc-status-dot {
@@ -5636,14 +5707,25 @@ html[data-darkmode="true"] .oc .dev-logo-btn:hover {
     background: #ef4444;
 }
 
-.oc #_oclog {
-    height: 26px !important;
-    line-height: 26px !important;
-    border-radius: 999px !important;
-    background: var(--bg-gray, #f8fafc) !important;
-    border: 1px solid var(--border-light, #e2e8f0) !important;
-    padding: 0 12px !important;
+.oc #_oclog:not(.oc-hidden) {
+    height: 24px !important;
+    line-height: 24px !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    border: none !important;
+    border-left: 1px solid color-mix(in srgb, currentColor 30%, transparent) !important;
+    margin-left: 8px !important;
+    padding: 0 0 0 8px !important;
     font-size: 12px !important;
+    color: inherit !important;
+    max-width: 320px !important;
+    min-width: 0 !important;
+}
+
+.oc #_oclog,
+.oc #_oclog b {
+    color: inherit !important;
+    font-weight: 600 !important;
 }
 
 .oc #_oclog::before,
@@ -5953,6 +6035,7 @@ fieldset.cbi-section:has(.oc),
     border: none !important;
     background: transparent !important;
     box-sizing: border-box !important;
+    overflow: visible !important;
 }
 
 fieldset.cbi-section:has(.oc):last-child,
@@ -5976,7 +6059,9 @@ fieldset.cbi-section:has(.oc) > table > tbody > tr > td,
     padding: 0 !important;
     margin: 0 !important;
     border: none !important;
+    background: transparent !important;
     box-sizing: border-box !important;
+    overflow: visible !important;
 }
 
 .oc,
@@ -6012,6 +6097,7 @@ fieldset.cbi-section:has(.oc) > table > tbody > tr > td,
 }
 
 /* 2. Clash Status Pill Clickable & Feedback */
+.oc .oc-status-capsule,
 .oc #_clash,
 .oc .oc-clash-status-wrap,
 .oc .oc-status-pill {
@@ -6020,6 +6106,7 @@ fieldset.cbi-section:has(.oc) > table > tbody > tr > td,
     transition: filter var(--transition-fast, 0.15s ease), transform var(--transition-fast, 0.15s ease) !important;
 }
 
+.oc .oc-status-capsule:hover,
 .oc #_clash:hover .oc-status-pill,
 .oc .oc-clash-status-wrap:hover .oc-status-pill,
 .oc .oc-status-pill:hover {
@@ -6027,6 +6114,7 @@ fieldset.cbi-section:has(.oc) > table > tbody > tr > td,
     transform: none !important;
 }
 
+html[data-darkmode="true"] .oc .oc-status-capsule:hover,
 html[data-darkmode="true"] .oc #_clash:hover .oc-status-pill,
 html[data-darkmode="true"] .oc .oc-status-pill:hover {
     filter: brightness(1.1) !important;
@@ -6039,7 +6127,6 @@ html[data-darkmode="true"] .oc .oc-status-pill:hover {
 .oc .ac-dir-pill:not(.oc-hidden),
 .oc .ac-switch:not(.oc-hidden),
 .oc .stats-view-toggle:not(.oc-hidden),
-.oc .myip-toolbar:not(.oc-hidden),
 .oc .icon-pill:not(.oc-hidden) {
     display: inline-flex !important;
     align-items: center !important;
@@ -6062,7 +6149,6 @@ html[data-darkmode="true"] .oc .oc-status-pill:hover {
 .oc .mode-pill .mode-pill-opt::after,
 .oc .icon-pill .icon-pill-opt::after,
 .oc .stats-view-toggle .icon-pill-opt + .icon-pill-opt::before,
-.oc .myip-toolbar .icon-pill-opt + .icon-pill-opt::before,
 .oc .ac-switch button::before,
 .oc .ac-switch button::after,
 .oc #stats-tabs .cbi-button-option::before,
@@ -6075,8 +6161,7 @@ html[data-darkmode="true"] .oc .oc-status-pill:hover {
 /* 3.1 Icon-only Options (.mode-pill-opt, .icon-pill-opt) */
 .oc .mode-pill .mode-pill-opt,
 .oc .icon-pill .icon-pill-opt,
-.oc .stats-view-toggle .icon-pill-opt,
-.oc .myip-toolbar .icon-pill-opt {
+.oc .stats-view-toggle .icon-pill-opt {
     position: relative !important;
     display: inline-flex !important;
     align-items: center !important;
@@ -6085,6 +6170,7 @@ html[data-darkmode="true"] .oc .oc-status-pill:hover {
     height: 22px !important;
     min-height: 22px !important;
     line-height: 1 !important;
+    margin: 0 !important;
     padding: 0 !important;
     border-radius: 4px !important;
     background: transparent !important;
@@ -6098,8 +6184,7 @@ html[data-darkmode="true"] .oc .oc-status-pill:hover {
 
 .oc .mode-pill .mode-pill-opt svg,
 .oc .icon-pill .icon-pill-opt svg,
-.oc .stats-view-toggle .icon-pill-opt svg,
-.oc .myip-toolbar .icon-pill-opt svg {
+.oc .stats-view-toggle .icon-pill-opt svg {
     width: 13px !important;
     height: 13px !important;
     display: block !important;
@@ -6168,7 +6253,6 @@ html[data-darkmode="true"] .oc .oc-status-pill:hover {
 .oc .mode-pill .mode-pill-opt:hover,
 .oc .icon-pill .icon-pill-opt:hover,
 .oc .stats-view-toggle .icon-pill-opt:hover,
-.oc .myip-toolbar .icon-pill-opt:hover,
 .oc #stats-tabs .cbi-button-option:hover,
 .oc .stats-tabs .cbi-button-option:hover,
 .oc .ac-dir-opt:hover:not(:disabled):not(.active),
@@ -6182,7 +6266,6 @@ html[data-darkmode="true"] .oc .oc-status-pill:hover {
 .oc .mode-pill .mode-pill-opt.active,
 .oc .icon-pill .icon-pill-opt.active,
 .oc .stats-view-toggle .icon-pill-opt.active,
-.oc .myip-toolbar .icon-pill-opt.active,
 .oc #stats-tabs input:checked + .cbi-button-option,
 .oc .stats-tabs input:checked + .cbi-button-option,
 .oc .stats-tab.active,
@@ -6200,7 +6283,6 @@ html[data-darkmode="true"] .oc .oc-status-pill:hover {
 .oc .mode-pill .mode-pill-opt.active svg,
 .oc .icon-pill .icon-pill-opt.active svg,
 .oc .stats-view-toggle .icon-pill-opt.active svg,
-.oc .myip-toolbar .icon-pill-opt.active svg,
 .oc .ac-dir-opt.active svg,
 .oc .ac-dir-opt[aria-pressed="true"] svg {
     stroke: var(--text-on-primary, #ffffff) !important;
@@ -6253,6 +6335,7 @@ html body .oc #ac-sort-menu button > svg {
 /* 6. MyIP Unified Borders (Eliminate Dark Border on Access Check) */
 .oc .myip-ip-section,
 .oc .myip-check-section {
+    background: var(--oc-card-bg, var(--bg-white, #ffffff)) !important;
     border: 1px solid var(--border-light, #e2e8f0) !important;
     box-shadow: var(--shadow-sm, 0 1px 2px rgba(0, 0, 0, 0.04)) !important;
     outline: none !important;
@@ -6260,14 +6343,24 @@ html body .oc #ac-sort-menu button > svg {
 
 .oc .myip-ip-section:hover,
 .oc .myip-check-section:hover {
+    background: var(--oc-card-bg, var(--bg-white, #ffffff)) !important;
     border-color: var(--border-light, #e2e8f0) !important;
     box-shadow: var(--shadow-sm, 0 1px 2px rgba(0, 0, 0, 0.04)) !important;
 }
 
 html[data-darkmode="true"] .oc .myip-ip-section,
-html[data-darkmode="true"] .oc .myip-check-section {
+html[data-darkmode="true"] .oc .myip-check-section,
+html[data-darkmode="true"] .oc .myip-ip-section:hover,
+html[data-darkmode="true"] .oc .myip-check-section:hover {
+    background: var(--oc-card-bg, var(--bg-white, #18181b)) !important;
     border: 1px solid var(--border-light, #27272a) !important;
     box-shadow: none !important;
+}
+
+.oc .myip-card-item:hover,
+html[data-darkmode="true"] .oc .myip-card-item:hover {
+    background: transparent !important;
+    border-color: var(--border-light, #e2e8f0) !important;
 }
 
 /* 7. Developer Footer: Borderless & Transparent */
@@ -6438,8 +6531,8 @@ html[data-darkmode="true"] .oc .developer-container .dev-logo-btn:hover {
         top: auto !important;
         right: auto !important;
         margin: 0 !important;
-        background: var(--bg-white) !important;
-        border: 1px solid var(--border-light) !important;
+        background: transparent !important;
+        border: none !important;
     }
     .oc .developer-container {
         flex-direction: column !important;
@@ -6587,16 +6680,58 @@ html[data-darkmode="true"] .oc .ac-key-btn:hover:not(:disabled):not(.ac-working)
     color: var(--primary-color, #3b82f6) !important;
 }
 
+.oc .myip-toolbar:not(.oc-hidden) {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 4px !important;
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+}
+
+.oc .myip-toolbar .icon-pill-opt + .icon-pill-opt::before {
+    display: none !important;
+}
+
 .oc .myip-toolbar .icon-pill-opt {
     position: relative !important;
     z-index: 1 !important;
-    border-radius: 4px !important;
-    transition: background 0.15s ease, color 0.15s ease !important;
+    width: 28px !important;
+    height: 28px !important;
+    min-width: 28px !important;
+    min-height: 28px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border: 1px solid var(--border-light, #e2e8f0) !important;
+    border-radius: var(--radius-sm, 6px) !important;
+    background: var(--bg-white, #ffffff) !important;
+    color: var(--text-secondary, #64748b) !important;
+    box-shadow: none !important;
+    cursor: pointer !important;
+    transition: all var(--transition-fast, 0.15s ease) !important;
+}
+
+html[data-darkmode="true"] .oc .myip-toolbar .icon-pill-opt {
+    background-color: var(--bg-light) !important;
+    border-color: var(--border-light) !important;
+    color: var(--text-primary) !important;
+}
+
+.oc .myip-toolbar .icon-pill-opt svg {
+    width: 14px !important;
+    height: 14px !important;
+    display: block !important;
+    stroke: currentColor !important;
 }
 
 .oc .myip-toolbar .icon-pill-opt:hover,
 html[data-darkmode="true"] .oc .myip-toolbar .icon-pill-opt:hover {
-    background: var(--hover-bg, rgba(59, 130, 246, 0.15)) !important;
+    background: var(--hover-bg, rgba(59, 130, 246, 0.12)) !important;
+    border-color: var(--primary-color, #3b82f6) !important;
     color: var(--primary-color, #3b82f6) !important;
 }
 
@@ -6714,7 +6849,7 @@ html[data-darkmode="true"] .oc-ver-pills-top {
 }
 
 /* Universal Control Box-Model Isolation */
-.oc input[type="radio"]:not(.cbi-button-group input):not(.stats-tabs input):not(#stats-tabs input),
+.oc input[type="radio"]:not(.cbi-button-group input):not(.stats-tabs input):not(.mode-pill input),
 .oc input[type="checkbox"]:not(.oc-switch input):not(.oc-ui-switch input):not(.plugin-toggle-switch input),
 .oc .mode-radio-label input[type="radio"] {
     min-height: 0 !important;
@@ -6730,9 +6865,11 @@ html[data-darkmode="true"] .oc-ver-pills-top {
     aspect-ratio: 1 / 1 !important;
 }
 
-.oc .cbi-button-group input[type="radio"],
-.oc #stats-tabs input[type="radio"],
-.oc .stats-tabs input[type="radio"] {
+.oc .cbi-button-group input[type="radio"]:not(#_),
+.oc #stats-tabs input[type="radio"]:not(#_),
+.oc .stats-tabs input[type="radio"]:not(#_),
+.oc #mode-pill input[type="radio"]:not(#_),
+.oc .mode-pill input[type="radio"]:not(#_) {
     position: absolute !important;
     width: 0 !important;
     height: 0 !important;
@@ -6742,6 +6879,7 @@ html[data-darkmode="true"] .oc-ver-pills-top {
     pointer-events: none !important;
     margin: 0 !important;
     padding: 0 !important;
+    border: 0 !important;
 }
 
 .oc button,

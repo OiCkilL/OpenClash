@@ -45,7 +45,10 @@
                                     <input type="checkbox" id="plugin_toggle" onchange="togglePlugin(this)">
                                     <span class="plugin-toggle-slider"></span>
                                 </label>
-                                <span class="value-indicator oc-clash-status-wrap" id="_clash" onclick="return ocOpenCoreStartFlow();" title="<%:Click to view runtime log%>"><span class="oc-status-pill is-loading"><span class="oc-status-dot"></span><span class="oc-status-text"><%:Collecting data...%></span></span></span>
+                                <div class="oc-status-capsule is-loading" id="oc_status_capsule" onclick="return ocOpenCoreStartFlow();" title="<%:Click to view runtime log%>">
+                                    <span class="value-indicator oc-clash-status-wrap" id="_clash"><span class="oc-status-pill is-loading"><span class="oc-status-dot"></span><span class="oc-status-text"><%:Collecting data...%></span></span></span>
+                                    <span class="value-indicator oc-hidden" id="_oclog"></span>
+                                </div>
                                 <div class="version-display-container">
                                     <div class="version-display oc-hidden" id="plugin-version-display" role="button" tabindex="0">
                                         <svg width="12" height="12"><use href="#oc-icon-package"/></svg>
@@ -56,7 +59,6 @@
                                         <span class="version-text" id="core-version-text">-</span>
                                     </div>
                                 </div>
-                                <span class="value-indicator oc-hidden" id="_oclog" onclick="LogManager.toggleLogPopup()" title="<%:Click to view full log%>"></span>
                             </div>
 
                             <div class="hero-status-right">
@@ -366,7 +368,7 @@
                                     <button type="button" class="ac-key-btn ac-sort-btn" id="ac-sort-btn" title="<%:Sort%>" aria-haspopup="menu">
                                         <svg width="14" height="14"><use href="#oc-icon-arrows-sort"/></svg><span class="ac-key-text"><%:Sort%></span><span class="ac-sort-ind"></span>
                                     </button>
-                                    <span class="help-link" tabindex="0" title="<%:Note: routing switches close existing connections%>">
+                                    <span class="help-link oc-hidden" tabindex="0" title="<%:Note: routing switches close existing connections%>">
                                         <svg width="12" height="12"><use href="#oc-icon-help"/></svg>
                                     </span>
                                     <div class="ac-sort-menu oc-hidden" id="ac-sort-menu" role="menu">
